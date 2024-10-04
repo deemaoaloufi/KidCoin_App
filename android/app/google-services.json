@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1081235665916",
+    "project_id": "kidcoin-app-c74c1",
+    "storage_bucket": "kidcoin-app-c74c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081235665916:android:7384695207875c30e47879",
+        "android_client_info": {
+          "package_name": "com.example.kidcoin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJSZG_0hn-Je1g9H50RABRwyBL7-KRkG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
