@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // For input formatting
 import 'package:kidcoin_app/firebase_options.dart';
 import 'dart:math'; // Importing for random number generation
+import 'dart:collection'; // For managing the set of unique IDs
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +30,10 @@ class MyApp extends StatelessWidget {
 }
 
 class ChildRegistrationForm extends StatefulWidget {
-  const ChildRegistrationForm({Key? key}) : super(key: key); // Added Key
+  const ChildRegistrationForm({super.key}); // Added Key
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChildRegistrationFormState createState() => _ChildRegistrationFormState();
 }
 
@@ -41,16 +43,20 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
   DateTime? _dateOfBirth;
   String? _gender;
   TextEditingController _dobController = TextEditingController();
+  int? _age;
 
   final List<String> _genders = ['Male', 'Female'];
+  final Set<String> _registeredIds = HashSet(); // Store registered unique IDs
 
   // Function to generate a unique ID
   String _generateUniqueId(String name) {
-    // You can customize this as per your need
     final random = Random().nextInt(1000); // Random number for extra uniqueness
+    DateTime.now().millisecondsSinceEpoch.toString();
+    // ignore: prefer_typing_uninitialized_variables
     var timestamp_;
     return '${name.toLowerCase().replaceAll(' ', '_')}_$timestamp_$random';
   }
+
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
@@ -59,12 +65,22 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
       // Generate a unique ID for the child
       String uniqueId = _generateUniqueId(_name!);
 
+      // Check if the ID is already registered
+      if (_registeredIds.contains(uniqueId)) {
+        _showIdExistsError();
+        return;
+      }
+
+      // Register the child by adding the unique ID
+      _registeredIds.add(uniqueId);
+
+      // Show success dialog
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('Child Registered'),
           content: Text(
-            'Unique ID: $uniqueId\nName: $_name\nDate of Birth: ${_dobController.text}\nGender: $_gender',
+            'Unique ID: $uniqueId\nName: $_name\nDate of Birth: ${_dobController.text}\nGender: $_gender\nAge: $_age years',
           ),
           actions: <Widget>[
             TextButton(
@@ -87,11 +103,63 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _dateOfBirth) {
-      setState(() {
-        _dateOfBirth = picked;
-        _dobController.text = "${_dateOfBirth!.toLocal()}".split(' ')[0];
-      });
+      final int age = _calculateAge(picked);
+      if (age < 9 || age > 14) {
+        _showAgeError();
+      } else {
+        setState(() {
+          _dateOfBirth = picked;
+          _age = age;
+          _dobController.text = "${_dateOfBirth!.toLocal()}".split(' ')[0];
+        });
+      }
     }
+  }
+
+  int _calculateAge(DateTime birthDate) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+    return age;
+  }
+
+  void _showAgeError() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Age Error'),
+        content: const Text('The child must be between 9 and 14 years old.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showIdExistsError() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('ID Error'),
+        content: const Text('The generated ID already exists. Please try again.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
