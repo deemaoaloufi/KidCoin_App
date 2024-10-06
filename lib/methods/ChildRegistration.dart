@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // For input formatting
+import 'package:flutter/services.dart'; 
 import '../services/child_service.dart'; 
+import '../methods/id_generator.dart';
+
+
 
 
 class ChildRegistrationForm extends StatefulWidget {
@@ -17,33 +20,33 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
   DateTime? _dateOfBirth;
   String? _gender;
 
-  // Controller for date picker
   final TextEditingController _dobController = TextEditingController();
-
-  // List of gender options (restricted to Male and Female)
   final List<String> _genders = ['Male', 'Female'];
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save(); // Save form field values
+      _formKey.currentState!.save();
 
-      // Create a map for child data
+      // Generate a unique ID for the child using IdGenerator
+      String childId = IdGenerator.generateId();
+
+      // Create a map for child data including the generated ID
       Map<String, dynamic> childData = {
         'name': _name,
         'dateOfBirth': _dateOfBirth,
         'gender': _gender,
+        'id': childId,
       };
 
       try {
-        await ChildService().addChild(_name!, childData); 
-        // Show success dialog or message
+        await ChildService().addChild(childId, childData); 
+        // Show success dialog or message if needed
       } catch (e) {
-        // Show error dialog or message
+        print('Failed to add child: $e');
       }
     }
   }
 
-  // Function to pick a date
   Future<void> _pickDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -55,7 +58,7 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
     if (picked != null && picked != _dateOfBirth) {
       setState(() {
         _dateOfBirth = picked;
-        _dobController.text = "${_dateOfBirth!.toLocal()}".split(' ')[0]; // Display only the date part
+        _dobController.text = "${_dateOfBirth!.toLocal()}".split(' ')[0];
       });
     }
   }
@@ -72,11 +75,10 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              // Child's Name Field
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Child\'s Name'),
                 inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')), // Allow only alphabetic input
+                  FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
                 ],
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -87,12 +89,10 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
                   return null;
                 },
                 onSaved: (value) {
-                  _name = value; // Save the name value here
+                  _name = value;
                 },
               ),
               const SizedBox(height: 16),
-
-              // Date of Birth Field
               TextFormField(
                 controller: _dobController,
                 decoration: const InputDecoration(
@@ -109,8 +109,6 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
                 },
               ),
               const SizedBox(height: 16),
-
-              // Gender Field
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Gender'),
                 items: _genders.map((String gender) {
@@ -132,8 +130,6 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
                 },
               ),
               const SizedBox(height: 32),
-
-              // Submit Button
               ElevatedButton(
                 onPressed: _submitForm,
                 child: const Text('Register Child'),
