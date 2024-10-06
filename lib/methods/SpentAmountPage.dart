@@ -42,14 +42,14 @@ class SpentAmountPage extends StatelessWidget {
               onPressed: () {
                 double? spentAmount = double.tryParse(spendingController.text); // Try parsing input to double
                 if (spentAmount != null && spentAmount > 0) {
-                  onSubmit(spentAmount); // Call the onSubmit function with the amount
-                  Navigator.of(context).pop(); // Close the current page
-                } else {
-                  // Show error message if input is invalid
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter a valid amount')),
-                  );
-                }
+                   onSubmit(spentAmount); // Call the onSubmit function with the amount
+                   Navigator.of(context).pop(); // Close the current page
+                   } else {
+                    // Show error message if input is invalid
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Please enter a valid amount')),
+                      );
+                      }
               },
               child: Text('Submit'),
             ),
