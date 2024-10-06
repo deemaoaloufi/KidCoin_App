@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // ignore: unused_import
-import 'services/auth_service.dart'; // Ensure this path is correct
+import 'services/auth_service.dart'; 
 import 'home_screen.dart'; // Import the new home screen
 
 void main() async {
