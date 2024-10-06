@@ -23,13 +23,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const ChildRegistrationForm(), // Directly show the registration form
+      home:
+          const ChildRegistrationForm(), // Directly show the registration form
     );
   }
 }
 
 class ChildRegistrationForm extends StatefulWidget {
-  const ChildRegistrationForm({Key? key}) : super(key: key); // Added Key
+  const ChildRegistrationForm({super.key}); // Added Key
 
   @override
   _ChildRegistrationFormState createState() => _ChildRegistrationFormState();
@@ -40,7 +41,7 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
   String? _name;
   DateTime? _dateOfBirth;
   String? _gender;
-  TextEditingController _dobController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
 
   final List<String> _genders = ['Male', 'Female'];
 
