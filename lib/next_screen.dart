@@ -57,7 +57,7 @@ class NextScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChildRegistrationForm()), // Use the registration form here
+                  MaterialPageRoute(builder: (context) => ChildRegistrationForm(parentId: '',)), // Use the registration form here
                 );
               },
               style: ButtonStyle(

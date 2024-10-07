@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'sign_up_page.dart';
-import 'child_registration.dart'; // Updated to import ChildRegistrationForm
+import 'child_registration.dart'; // Import ChildRegistrationForm
 
 class ParentLoginPage extends StatefulWidget {
   const ParentLoginPage({super.key});
@@ -44,9 +44,12 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
+        // Pass user.uid as parentId to ChildRegistrationForm
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ChildRegistrationForm()), // Updated to ChildRegistrationForm
+          MaterialPageRoute(
+            builder: (context) => ChildRegistrationForm(parentId: user.uid), // Pass the parent ID
+          ),
         );
       }
     } catch (e) {
@@ -63,7 +66,7 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
   void _navigateToSignUp() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const SignUpPage()),
+      MaterialPageRoute(builder: (context) => SignUpPage()), // Assuming SignUpPage is defined
     );
   }
 
