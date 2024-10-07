@@ -71,17 +71,20 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Parent Login'),
-        backgroundColor: Colors.blue,
+        title: const Text(
+          'Parent Login',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), // White bold text
+        ),
+        backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Log In to KidCoin',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple text
             ),
             const SizedBox(height: 20),
             TextField(
@@ -107,18 +110,25 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
                 : ElevatedButton(
                     onPressed: _login,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[200]!), // Lighter purple for buttons
                     ),
-                    child: const Text('Login'),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple for button text
+                    ),
                   ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: _navigateToSignUp,
-              child: const Text('Don’t have an account? Sign Up'),
+              child: Text(
+                'Don’t have an account? Sign Up',
+                style: TextStyle(color: Colors.purple[900]), // Dark purple for sign-up text
+              ),
             ),
           ],
         ),
       ),
+      backgroundColor: Colors.white, // Set background color to white
     );
   }
 }

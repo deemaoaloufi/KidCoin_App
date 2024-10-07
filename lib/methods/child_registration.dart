@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
-import '../services/child_service.dart'; 
+import 'package:flutter/services.dart';
+import '../services/child_service.dart';
 import '../methods/id_generator.dart';
-
-
-
 
 class ChildRegistrationForm extends StatefulWidget {
   const ChildRegistrationForm({super.key});
@@ -39,10 +36,16 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
       };
 
       try {
-        await ChildService().addChild(childId, childData); 
+        await ChildService().addChild(childId, childData);
         // Show success dialog or message if needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Child registered successfully!')),
+        );
       } catch (e) {
         print('Failed to add child: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to register child: $e')),
+        );
       }
     }
   }
@@ -63,20 +66,30 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
     }
   }
 
+  // Registering a New Child
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registering a New Child'),
+        title: const Text(
+          'Registering a New Child',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), // White bold text
+        ),
+        backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
       ),
-      body: Padding(
+      body: Container( // Set background to white
+        color: Colors.white,
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Child\'s Name'),
+                decoration: InputDecoration(
+                  labelText: 'Child\'s Name',
+                  labelStyle: const TextStyle(color: Color(0xFF4A148C)), // Dark purple
+                ),
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
                 ],
@@ -95,9 +108,10 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _dobController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Date of Birth',
-                  suffixIcon: Icon(Icons.calendar_today),
+                  labelStyle: const TextStyle(color: Color(0xFF4A148C)), // Dark purple
+                  suffixIcon: const Icon(Icons.calendar_today, color: Color(0xFF4A148C)), // Dark purple
                 ),
                 readOnly: true,
                 onTap: () => _pickDate(context),
@@ -110,11 +124,14 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: 'Gender'),
+                decoration: InputDecoration(
+                  labelText: 'Gender',
+                  labelStyle: const TextStyle(color: Color(0xFF4A148C)), // Dark purple
+                ),
                 items: _genders.map((String gender) {
                   return DropdownMenuItem<String>(
                     value: gender,
-                    child: Text(gender),
+                    child: Text(gender, style: const TextStyle(color: Color(0xFF4A148C))), // Dark purple
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -132,7 +149,10 @@ class _ChildRegistrationFormState extends State<ChildRegistrationForm> {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: const Text('Register Child'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[300]!), // Medium purple
+                ),
+                child: const Text('Register Child', style: TextStyle(color: Colors.white)), // White text color
               ),
             ],
           ),

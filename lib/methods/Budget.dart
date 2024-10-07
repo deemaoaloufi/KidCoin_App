@@ -1,16 +1,19 @@
 class Budget {
-  String childId;
-  double foodAndSnacks;
-  double entertainment;
-  double needs;
-  double savings;
+  String childId; // Identifier for the child
+  double foodAndSnacks; // Budget for food and snacks
+  double entertainment; // Budget for entertainment
+  double needs; // Budget for needs
+  double savings; // Budget for savings
 
+  // Constructor for initializing budget values
   Budget(this.childId, this.foodAndSnacks, this.entertainment, this.needs, this.savings);
 
+  // Calculate total budget for the child
   double get totalBudget {
-    return foodAndSnacks + entertainment + needs + savings;
+    return foodAndSnacks + entertainment + needs + savings; // Total budget calculation
   }
 
+  // Override toString for easy debugging and display
   @override
   String toString() {
     return 'Budget for $childId: Food: \$${foodAndSnacks.toStringAsFixed(2)}, '
@@ -21,7 +24,7 @@ class Budget {
 }
 
 class BudgetManager {
-  final List<Budget> _budgets = [];
+  final List<Budget> _budgets = []; // List to hold budget instances
 
   BudgetManager() {
     // Prepopulate the list with sample data
@@ -37,7 +40,8 @@ class BudgetManager {
     );
   }
 
+  // Method to add a new budget
   void addBudget(Budget budget) {
-    _budgets.add(budget);
+    _budgets.add(budget); // Add the new budget to the list
   }
 }

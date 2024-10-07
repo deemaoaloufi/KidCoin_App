@@ -73,17 +73,21 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
-        backgroundColor: Colors.blue,
+        title: const Text(
+          'Parent Sign Up',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), // White bold text
+        ),
+        backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.white, // Set the background color to white
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
               'Create an Account',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4A148C)), // Dark purple
             ),
             const SizedBox(height: 20),
             TextField(
@@ -91,6 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: const InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Color(0xFF4A148C)), // Dark purple
               ),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -100,6 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: const InputDecoration(
                 labelText: 'Password',
                 border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Color(0xFF4A148C)), // Dark purple
               ),
               obscureText: true,
             ),
@@ -109,6 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: const InputDecoration(
                 labelText: 'Confirm Password',
                 border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Color(0xFF4A148C)), // Dark purple
               ),
               obscureText: true,
             ),
@@ -118,16 +125,19 @@ class _SignUpPageState extends State<SignUpPage> {
                 : ElevatedButton(
                     onPressed: _signUp,
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[300]!), // Medium purple for button
                     ),
-                    child: const Text('Sign Up'),
+                    child: const Text('Sign Up', style: TextStyle(color: Colors.white)), // White text color
                   ),
             const SizedBox(height: 10),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Already have an account? Log In'),
+              child: const Text(
+                'Already have an account? Log In',
+                style: TextStyle(color: Color(0xFF4A148C)), // Dark purple
+              ),
             ),
           ],
         ),

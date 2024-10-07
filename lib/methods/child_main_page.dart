@@ -75,49 +75,56 @@ class _ChildMainPageState extends State<ChildMainPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome, ${widget.childId}'), // Title includes child's ID
+        title: Text(
+          'Welcome, ${widget.childId}',
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white), // Bold and white text
+        ),
+        backgroundColor: Colors.purple[300], // Light purple color for the app bar
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Total Budget Display
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const Text(
-                  'Your Total Budget',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '\$${budget!.totalBudget.toStringAsFixed(2)}', // Display total budget
-                  style: const TextStyle(fontSize: 28, color: Colors.blue),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20), // Space between total and categories
-
-          // Budget Categories Row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              buildBudgetCategory('Food & Snacks', budget!.foodAndSnacks),
-              buildBudgetCategory('Needs', budget!.needs),
-              buildBudgetCategory('Entertainment', budget!.entertainment),
-              buildBudgetCategory('Savings', budget!.savings),
-            ],
-          ),
-          const SizedBox(height: 20), // Space for future content
-          const Expanded(
-            child: Center(
-              child: Text(
-                'This area will be used for future features (Games, etc.)',
-                style: TextStyle(color: Colors.grey),
+      body: Container(
+        color: Colors.white, // Set background color to white
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Total Budget Display
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  const Text(
+                    'Your Total Budget',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4A148C)), // Purple color
+                  ),
+                  Text(
+                    '\$${budget!.totalBudget.toStringAsFixed(2)}', // Display total budget
+                    style: const TextStyle(fontSize: 28, color: Color(0xFF4A148C)), // Purple color
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20), // Space between total and categories
+
+            // Budget Categories Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                buildBudgetCategory('Food & Snacks', budget!.foodAndSnacks),
+                buildBudgetCategory('Needs', budget!.needs),
+                buildBudgetCategory('Entertainment', budget!.entertainment),
+                buildBudgetCategory('Savings', budget!.savings),
+              ],
+            ),
+            const SizedBox(height: 20), // Space for future content
+            const Expanded(
+              child: Center(
+                child: Text(
+                  'This area will be used for future features (Games, etc.)',
+                  style: TextStyle(color: Colors.grey),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -130,12 +137,12 @@ class _ChildMainPageState extends State<ChildMainPage> {
         children: [
           CircleAvatar(
             radius: 40,
-            backgroundColor: Colors.blue[100], // Light background for the icon
-            child: const Icon(Icons.category, size: 40, color: Colors.blue), // Generic icon
+            backgroundColor: const Color(0xFFE1BEE7), // Light purple background for the icon
+            child: const Icon(Icons.category, size: 40, color: Color(0xFF4A148C)), // Purple icon color
           ),
           const SizedBox(height: 8),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text('\$${amount.toStringAsFixed(2)}'), // Display the budget amount
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF4A148C))), // Purple title color
+          Text('\$${amount.toStringAsFixed(2)}', style: const TextStyle(color: Color(0xFF4A148C))), // Purple amount color
         ],
       ),
     );

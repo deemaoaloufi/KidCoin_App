@@ -5,7 +5,8 @@ class SpentAmountPage extends StatelessWidget {
   final double currentAmount; // Current amount in the budget category
   final Function(double) onSubmit; // Callback to handle the submitted amount
 
-  const SpentAmountPage({super.key, 
+  const SpentAmountPage({
+    super.key,
     required this.category,
     required this.currentAmount,
     required this.onSubmit,
@@ -18,6 +19,7 @@ class SpentAmountPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Specify Amount Spent on $category'), // Title includes the category
+        backgroundColor: Colors.purple[300], // Lighter purple for AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,9 +28,9 @@ class SpentAmountPage extends StatelessWidget {
           children: [
             Text(
               'Current Amount: \$${currentAmount.toStringAsFixed(2)}', // Display current amount
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple color
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20), // Space between elements
             TextField(
               controller: spendingController,
               keyboardType: TextInputType.number,
@@ -37,25 +39,32 @@ class SpentAmountPage extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20), // Space between elements
             ElevatedButton(
               onPressed: () {
                 double? spentAmount = double.tryParse(spendingController.text); // Try parsing input to double
                 if (spentAmount != null && spentAmount > 0) {
-                   onSubmit(spentAmount); // Call the onSubmit function with the amount
-                   Navigator.of(context).pop(); // Close the current page
-                   } else {
-                    // Show error message if input is invalid
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter a valid amount')),
-                      );
-                      }
+                  onSubmit(spentAmount); // Call the onSubmit function with the amount
+                  Navigator.of(context).pop(); // Close the current page
+                } else {
+                  // Show error message if input is invalid
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid amount')),
+                  );
+                }
               },
-              child: const Text('Submit'),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[200]!), // Lighter purple for button
+              ),
+              child: Text(
+                'Submit',
+                style: TextStyle(color: Colors.purple[900]), // Dark purple for button text
+              ),
             ),
           ],
         ),
       ),
+      backgroundColor: Colors.white, // Set background color to white
     );
   }
 }
