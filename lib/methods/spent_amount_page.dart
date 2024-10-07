@@ -5,7 +5,7 @@ class SpentAmountPage extends StatelessWidget {
   final double currentAmount; // Current amount in the budget category
   final Function(double) onSubmit; // Callback to handle the submitted amount
 
-  SpentAmountPage({
+  const SpentAmountPage({super.key, 
     required this.category,
     required this.currentAmount,
     required this.onSubmit,
@@ -26,18 +26,18 @@ class SpentAmountPage extends StatelessWidget {
           children: [
             Text(
               'Current Amount: \$${currentAmount.toStringAsFixed(2)}', // Display current amount
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: spendingController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Enter Amount Spent',
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 double? spentAmount = double.tryParse(spendingController.text); // Try parsing input to double
@@ -47,11 +47,11 @@ class SpentAmountPage extends StatelessWidget {
                    } else {
                     // Show error message if input is invalid
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Please enter a valid amount')),
+                      const SnackBar(content: Text('Please enter a valid amount')),
                       );
                       }
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

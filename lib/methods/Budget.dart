@@ -21,7 +21,7 @@ class Budget {
 }
 
 class BudgetManager {
-  List<Budget> _budgets = [];
+  final List<Budget> _budgets = [];
 
   BudgetManager() {
     // Prepopulate the list with sample data

@@ -3,38 +3,44 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // Register user
-  Future<User?> registerWithEmailAndPassword(String email, String password) async {
+  // Sign Up with Email and Password
+  Future<User?> signUpWithEmail(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email, 
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
         password: password,
       );
-      return result.user; // This returns User? (nullable)
+      return userCredential.user;
     } catch (e) {
-      print(e.toString());
-      return null; // Return null if there's an error
+      print('Sign Up Error: $e');
+      throw Exception('Failed to sign up: $e');
     }
   }
 
-  // Sign in user
-  Future<User?> signInWithEmailAndPassword(String email, String password) async {
+  // Login with Email and Password
+  Future<User?> loginWithEmail(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email, 
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
         password: password,
       );
-      return result.user; // This returns User? (nullable)
+      return userCredential.user;
     } catch (e) {
-      print(e.toString());
-      return null; // Return null if there's an error
+      print('Login Error: $e');
+      throw Exception('Failed to login: $e');
     }
   }
 
-  // Sign out user
-  Future<void> signOut() async {
-    await _auth.signOut();
+  // Logout
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      print('Logout Error: $e');
+      throw Exception('Failed to log out: $e');
+    }
   }
+
+  // Get Current User
+  User? get currentUser => _auth.currentUser;
 }
-
-

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'Budget.dart'; // Import the Budget and BudgetManager together
-import 'SpentAmountPage.dart'; // Import the SpentAmountPage
+import 'budget.dart'; // Import the Budget and BudgetManager together
+import 'spent_amount_page.dart'; // Import the SpentAmountPage
 
 class ChildMainPage extends StatefulWidget {
   final String childId; // Identifier for the child
 
   // Constructor to initialize childId
-  ChildMainPage({required this.childId});
+  const ChildMainPage({super.key, required this.childId});
 
   @override
   _ChildMainPageState createState() => _ChildMainPageState();
@@ -70,7 +70,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
   @override
   Widget build(BuildContext context) {
     if (budget == null) {
-      return Center(child: CircularProgressIndicator()); // Show loading indicator while budget is being fetched
+      return const Center(child: CircularProgressIndicator()); // Show loading indicator while budget is being fetched
     }
 
     return Scaffold(
@@ -85,18 +85,18 @@ class _ChildMainPageState extends State<ChildMainPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'Your Total Budget',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   '\$${budget!.totalBudget.toStringAsFixed(2)}', // Display total budget
-                  style: TextStyle(fontSize: 28, color: Colors.blue),
+                  style: const TextStyle(fontSize: 28, color: Colors.blue),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 20), // Space between total and categories
+          const SizedBox(height: 20), // Space between total and categories
 
           // Budget Categories Row
           Row(
@@ -108,8 +108,8 @@ class _ChildMainPageState extends State<ChildMainPage> {
               buildBudgetCategory('Savings', budget!.savings),
             ],
           ),
-          SizedBox(height: 20), // Space for future content
-          Expanded(
+          const SizedBox(height: 20), // Space for future content
+          const Expanded(
             child: Center(
               child: Text(
                 'This area will be used for future features (Games, etc.)',
@@ -131,10 +131,10 @@ class _ChildMainPageState extends State<ChildMainPage> {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.blue[100], // Light background for the icon
-            child: Icon(Icons.category, size: 40, color: Colors.blue), // Generic icon
+            child: const Icon(Icons.category, size: 40, color: Colors.blue), // Generic icon
           ),
-          SizedBox(height: 8),
-          Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
           Text('\$${amount.toStringAsFixed(2)}'), // Display the budget amount
         ],
       ),

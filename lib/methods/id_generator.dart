@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 class IdGenerator {
-  static final Uuid _uuid = Uuid();
+  static final Uuid _uuid = const Uuid();
 
   // Generate a unique ID using uuid
   static String generateId() {
