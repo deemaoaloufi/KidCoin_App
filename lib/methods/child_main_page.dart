@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'budget.dart'; // Import the Budget and BudgetManager together
+import 'budget.dart'; // Import the Budget class
 import 'spent_amount_page.dart'; // Import the SpentAmountPage
 
 class ChildMainPage extends StatefulWidget {
@@ -13,21 +13,18 @@ class ChildMainPage extends StatefulWidget {
 }
 
 class _ChildMainPageState extends State<ChildMainPage> {
-  late BudgetManager budgetManager; // Budget manager instance
   Budget? budget; // Budget for the child, initially null
 
   @override
   void initState() {
     super.initState();
-    budgetManager = BudgetManager(); // Create an instance of BudgetManager
     _loadBudget(); // Load the child's budget
   }
 
-  // Asynchronously load budget data
-  Future<void> _loadBudget() async {
-    Budget fetchedBudget = budgetManager.getBudgetByChildId(widget.childId); // Update to synchronous fetch
+  // Load budget data (direct initialization)
+  void _loadBudget() {
     setState(() {
-      budget = fetchedBudget; // Update state with the fetched budget
+      budget = Budget(widget.childId); // Initialize the budget directly using the child's ID
     });
   }
 
@@ -52,16 +49,24 @@ class _ChildMainPageState extends State<ChildMainPage> {
     setState(() {
       switch (category) {
         case 'Food & Snacks':
-          if (budget != null) budget!.foodAndSnacks -= spentAmount;
+          if (budget != null && budget!.foodAndSnacks >= spentAmount) {
+            budget!.foodAndSnacks -= spentAmount;
+          }
           break;
         case 'Needs':
-          if (budget != null) budget!.needs -= spentAmount;
+          if (budget != null && budget!.needs >= spentAmount) {
+            budget!.needs -= spentAmount;
+          }
           break;
         case 'Entertainment':
-          if (budget != null) budget!.entertainment -= spentAmount;
+          if (budget != null && budget!.entertainment >= spentAmount) {
+            budget!.entertainment -= spentAmount;
+          }
           break;
         case 'Savings':
-          if (budget != null) budget!.savings -= spentAmount;
+          if (budget != null && budget!.savings >= spentAmount) {
+            budget!.savings -= spentAmount;
+          }
           break;
       }
     });
@@ -70,7 +75,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
   @override
   Widget build(BuildContext context) {
     if (budget == null) {
-      return const Center(child: CircularProgressIndicator()); // Show loading indicator while budget is being fetched
+      return const Center(child: CircularProgressIndicator()); // Show loading indicator while budget is being loaded
     }
 
     return Scaffold(
@@ -96,7 +101,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4A148C)), // Purple color
                   ),
                   Text(
-                    '\$${budget!.totalBudget.toStringAsFixed(2)}', // Display total budget
+                    '\$${budget!.calculatedTotalBudget.toStringAsFixed(2)}', // Display total budget using the getter
                     style: const TextStyle(fontSize: 28, color: Color(0xFF4A148C)), // Purple color
                   ),
                 ],
