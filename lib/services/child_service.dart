@@ -6,9 +6,9 @@ class ChildService {
   Future<void> addChild(Map<String, dynamic> childData) async {
     try {
       DocumentReference docRef = childCollection.doc();
-      String childId = docRef.id.substring(0, 6).toUpperCase(); // Change this if necessary
+      String childId = docRef.id.substring(0, 6).toUpperCase(); // Generate a 6-character ID
 
-      childData['childId'] = childId;
+      childData['childId'] = childId; // Store only the 6-character childId in Firestore
       await docRef.set(childData);
     } catch (e) {
       throw Exception('Error adding child: $e');
