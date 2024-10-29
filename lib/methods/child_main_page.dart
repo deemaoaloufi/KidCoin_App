@@ -134,6 +134,46 @@ class _ChildMainPageState extends State<ChildMainPage> {
     );
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // Helper method to build each budget category
   Widget buildBudgetCategory(String title, double amount) {
     return GestureDetector(
