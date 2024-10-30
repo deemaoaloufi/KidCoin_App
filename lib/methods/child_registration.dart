@@ -20,15 +20,20 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
   final TextEditingController _dobController = TextEditingController();
   bool _isLoading = false;
   String? _editingChildId;
-  double? _budget;
-  String _mood = '';
+  double? _budget; // field for budget
+  String _mood = ''; //field for  Mood variable
 
+  // Define the mood definitions map here
   final Map<String, String> moodDefinitions = {
-    'Captain Saver': 'Focuses on saving and budgeting for future needs.',
+    'Captain Saver':
+        'Savings= 40% \nFocuses on saving and budgeting for future needs. ',
     'Captain Balanced': 'Balances spending and saving wisely.',
-    'Captain Funster': 'Encourages spending on fun and enjoyment.',
-    'Captain Essential': 'Prioritizes essential needs and expenses.',
-    'Captain Foodie': 'Encourages spending on food and snacks.',
+    'Captain Funster':
+        'Entertainment= 40% \nEncourages spending on fun and enjoyment. ',
+    'Captain Essential':
+        'Needs= 40% \nPrioritizes essential needs and expenses.',
+    'Captain Foodie':
+        'Food & Snack= 40% \nEncourages spending on food and snacks.',
   };
 
   Future<void> _submitForm() async {
@@ -39,8 +44,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
         'name': _name,
         'dateOfBirth': _dateOfBirth?.toIso8601String(),
         'gender': _gender,
-        'budget': _budget,
-        'mood': _mood,
+        'budget': _budget, // Save budget in the data map in firebase
+        'mood': _mood, // Save the selected mood in Firebase
         'parentId': widget.parentId,
       };
 
@@ -96,8 +101,12 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
       _dateOfBirth = DateTime.parse(doc['dateOfBirth']);
       _dobController.text = _dateOfBirth!.toIso8601String().split('T')[0];
       _gender = doc['gender'];
-      _budget = doc['budget'] != null ? doc['budget'].toDouble() : null;
-      _mood = doc['mood'] ?? '';
+      _budget = doc['budget'] != null
+          ? doc['budget'].toDouble()
+          : null; // Populate budget if exists
+      final data = doc.data()
+          as Map<String, dynamic>?; // Check if mood exists before accessing
+      _mood = data != null && data.containsKey('mood') ? data['mood'] : '';
       _editingChildId = doc.id;
     });
   }
@@ -130,7 +139,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                         value!.isEmpty ? 'Please enter child name' : null,
                     onSaved: (value) => _name = value!,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]+$')),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^[a-zA-Z\s]+$')),
                     ],
                   ),
                   TextFormField(
@@ -156,10 +166,13 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                         value == null ? 'Please select a gender' : null,
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Budget'),
+                    decoration: InputDecoration(
+                        labelText:
+                            'Budget'), //budget wedget to be displayed in the screen
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d{0,2})?$')),
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+(\.\d{0,2})?$')),
                     ],
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -167,23 +180,32 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                       }
                       final budget = double.tryParse(value);
                       if (budget == null || budget <= 0) {
-                        return 'Please enter a valid budget';
+                        return 'Please enter a valid budget'; //validate the budget, the field itself only allow numbers!
                       }
                       return null;
                     },
                     onSaved: (value) => _budget = double.parse(value!),
                   ),
+                  // Mood dropdown
                   DropdownButtonFormField<String>(
                     value: _mood.isEmpty ? null : _mood,
                     decoration: InputDecoration(labelText: 'Mood'),
-                    items: moodDefinitions.keys
-                        .map((mood) => DropdownMenuItem(value: mood, child: Text(mood)))
+                    items: [
+                      'Captain Saver',
+                      'Captain Balanced',
+                      'Captain Funster',
+                      'Captain Essential',
+                      'Captain Foodie'
+                    ]
+                        .map((mood) =>
+                            DropdownMenuItem(value: mood, child: Text(mood)))
                         .toList(),
                     onChanged: (value) {
                       if (value != null) {
                         setState(() {
-                          _mood = value;
+                          _mood = value; // Update the selected mood
                         });
+                        // Show the dialog with the mood definition for usability!!
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -193,7 +215,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pop();
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
                                   },
                                   child: Text('Close'),
                                 ),
@@ -203,8 +226,10 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                         );
                       }
                     },
-                    validator: (value) => value == null ? 'Please select a mood' : null,
+                    validator: (value) =>
+                        value == null ? 'Please select a mood' : null,
                   ),
+
                   const SizedBox(height: 20),
                   _isLoading
                       ? CircularProgressIndicator()
@@ -238,7 +263,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                       return ListTile(
                         title: Text(doc['name']),
                         subtitle: Text(
-                            "Child ID: ${doc['childId']} | DOB: ${doc['dateOfBirth']} | Gender: ${doc['gender']} | Budget: \$${doc['budget'] ?? 'N/A'} | Mood: ${doc['mood'] ?? 'N/A'}"),
+                            "Child ID: ${doc['childId']} | DOB: ${doc['dateOfBirth']} | Gender: ${doc['gender']} | Budget: \$${doc['budget'] ?? 'N/A'}| Mood: ${doc['mood'] ?? 'N/A'}"),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
