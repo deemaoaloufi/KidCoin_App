@@ -18,10 +18,14 @@ class Budget {
 
   // Method to add spending in a specified category
   String? addSpending(String category, double amount) {
-    if (amount <= 0) {
-      return 'Amount must be greater than zero.'; // Error for zero or negative values
+    if (amount < 0) {
+      return 'Amount can not be negative'; // Error for zero or negative values
     }
 
+    if (amount == 0) {
+      return 'No spending amount entered'; // Error for zero or negative values
+    }
+    
     switch (category) {
       case 'Food & Snacks':
         if (amount > foodAndSnacks) {

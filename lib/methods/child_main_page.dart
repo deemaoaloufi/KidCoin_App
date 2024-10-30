@@ -130,6 +130,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: color, width: 1.5),
+          
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
