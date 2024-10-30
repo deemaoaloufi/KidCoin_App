@@ -101,13 +101,14 @@ class NextScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Button for Child Login Screen
+            // Button for Child Login Screen - Navigates to child login screen
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChildLoginScreen()),
+                      builder: (context) =>
+                          ChildLoginScreen()), // Opens Child Login Screen
                 );
               },
               style: ButtonStyle(
@@ -115,7 +116,7 @@ class NextScreen extends StatelessWidget {
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
               ),
               child: Text(
-                'Child Login',
+                'Child Login', // Button labeled for Child Login
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.purple[900]),
               ),
