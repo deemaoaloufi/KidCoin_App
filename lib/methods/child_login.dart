@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'child_main_page.dart'; // Import the ChildMainPage
+import 'child_main_page.dart'; // Importing the ChildMainPage
 
+// ChildLoginScreen child enters unique id and navigates to the main page.
 class ChildLoginScreen extends StatefulWidget {
   const ChildLoginScreen({Key? key}) : super(key: key);
 
@@ -20,7 +21,7 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
     _idController = TextEditingController();
   }
 
-  // Verify the unique ID with the stored childId in Firestore
+  // Verifies unique ID with the stored childId in Firestore
   Future<void> _signIn() async {
     String enteredId = _idController.text.trim().toUpperCase();
 
@@ -36,19 +37,19 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
     });
 
     try {
-      // Query Firestore to find a child with the entered childId
+      // Query Firestore to find an exisiting child with the entered childId
       QuerySnapshot query = await FirebaseFirestore.instance
           .collection('children')
           .where('childId', isEqualTo: enteredId)
           .get();
 
       if (query.docs.isNotEmpty) {
-        // Get the child's name and navigate to ChildMainPage
+        // stores the child's name and goes to the ChildMainPage
         setState(() {
           _childName = query.docs.first['name'];
         });
 
-        // Navigate to ChildMainPage and pass the childId
+        //  passes the childId to the ChildMainPage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -56,11 +57,12 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
           ),
         );
       } else {
-        // Show error if no matching childId is found
+        // Shows "Incorrect unique ID" if no matching childId is found
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Incorrect unique ID')),
         );
       }
+      // Shows "Error verifying ID" if no matching childId is found
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error verifying ID: $e')),
@@ -85,7 +87,7 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
         title: const Text('Child Login'),
         backgroundColor: Colors.purple[300],
       ),
-      backgroundColor: Colors.white, // Set background color of Scaffold to white
+      backgroundColor: Colors.white, // Set background to white
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -114,8 +116,8 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _signIn, // Update the button action
-                    child: const Text('Sign In'), // Change button text to "Sign In"
+                    onPressed: _signIn, // Updates the button action
+                    child: const Text('Sign In'), // Change button to "Sign In"
                   ),
                 ],
               ),
