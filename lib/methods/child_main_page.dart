@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'budget.dart'; // Import the Budget class
-import 'tip.dart'; // Import the Tip class
+import 'budget.dart';
+import 'reward_selection_screen.dart';
+import 'tip.dart';
+import 'reward.dart';
 
 class ChildMainPage extends StatefulWidget {
-  final String childId; // Identifier for the child
+  final String childId;
 
   const ChildMainPage({Key? key, required this.childId}) : super(key: key);
 
@@ -14,9 +16,12 @@ class ChildMainPage extends StatefulWidget {
 
 class _ChildMainPageState extends State<ChildMainPage> {
   Budget? budget;
-  Tip? tip; // Instance to handle tips
-  String? childName; // To store and display the child's name
+  Tip? tip;
+  String? childName;
   bool _isLoading = true;
+  RewardManager rewardManager = RewardManager();
+  bool isRewardLoading = true;
+  String? selectedReward;
 
   @override
   void initState() {
@@ -24,10 +29,8 @@ class _ChildMainPageState extends State<ChildMainPage> {
     _initializeData();
   }
 
-  // Fetch child data from Firestore and initialize budget
   Future<void> _initializeData() async {
     try {
-      // Retrieve the document by childId
       DocumentSnapshot doc = await FirebaseFirestore.instance
           .collection('children')
           .where('childId', isEqualTo: widget.childId)
@@ -36,17 +39,14 @@ class _ChildMainPageState extends State<ChildMainPage> {
 
       if (doc.exists) {
         setState(() {
-          // Retrieve child’s name, total budget, and mood
           childName = doc['name'];
           double totalBudget = doc['budget']?.toDouble() ?? 0.0;
           String childMood = doc['mood'] ?? 'Captain Balanced';
 
-          // Initialize the Budget object and set the mood
           budget = Budget(widget.childId)
             ..totalRemaining = totalBudget
-            ..setMood(childMood); // This will divide the budget based on mood
+            ..setMood(childMood);
 
-          // Initialize the Tip object to generate tips based on mood
           tip = Tip(childMood);
 
           _isLoading = false;
@@ -60,27 +60,22 @@ class _ChildMainPageState extends State<ChildMainPage> {
     }
   }
 
-  // Method to prompt for spending input and update the budget
-  void _addSpending(String category) async {
+void _addSpending(String category) async {
     double? amount = await _showSpendingDialog(category);
 
     if (amount != null && budget != null) {
-      // Try to add spending and get any error message
       String? error = budget!.addSpending(category, amount);
 
       if (error != null) {
-        // Show error message if there's an issue with the spending amount
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error)),
         );
       } else {
-        // No error, so update the UI to reflect the new budget values
         setState(() {});
       }
     }
   }
 
-  // Helper to display a dialog to enter spending amount
   Future<double?> _showSpendingDialog(String category) async {
     final TextEditingController controller = TextEditingController();
 
@@ -118,9 +113,8 @@ class _ChildMainPageState extends State<ChildMainPage> {
     );
   }
 
-  // Helper widget to build each budget category with spending entry
   Widget _buildBudgetCategory(String title, double amount, Color color, IconData icon) {
-    String tipText = tip?.displayTip(title, budget!) ?? ''; // Get the tip for this category
+    String tipText = tip?.displayTip(title, budget!) ?? '';
 
     return GestureDetector(
       onTap: () => _addSpending(title),
@@ -130,7 +124,6 @@ class _ChildMainPageState extends State<ChildMainPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: color, width: 1.5),
-          
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -165,34 +158,35 @@ class _ChildMainPageState extends State<ChildMainPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isLoading ? 'Loading...' : 'Welcome, $childName'),
-        backgroundColor: Colors.purple[300],
-      ),
-      backgroundColor: Colors.white,
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Display total budget
-                  Text(
-                    "Total Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Expanded(
-                    child: GridView.count(
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(_isLoading ? 'Loading...' : 'Welcome, $childName'),
+      backgroundColor: Colors.purple[300],
+    ),
+    backgroundColor: Colors.white,
+    body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Total Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    GridView.count(
                       crossAxisCount: 2,
                       padding: const EdgeInsets.all(16),
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
                       childAspectRatio: 0.85,
+                      shrinkWrap: true,
                       children: [
                         _buildBudgetCategory(
                             "Food & Snacks",
@@ -216,10 +210,38 @@ class _ChildMainPageState extends State<ChildMainPage> {
                             Icons.savings),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-    );
-  }
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RewardSelectionScreen(childId: widget.childId),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Colors.purple,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Select Your Reward!',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+  );
+}
 }
