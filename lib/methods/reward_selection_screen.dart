@@ -38,6 +38,10 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
           List<dynamic> rewardsData = doc.data()!['rewards'];
           setState(() {
             rewards = rewardsData.cast<String>();  // Convert to list of strings
+            // Fetch the previously selected reward from Firestore
+            selectedReward = doc.data()!.containsKey('selectedReward')
+                ? doc.data()!['selectedReward']
+                : null;
             isLoading = false;
           });
         } else {
