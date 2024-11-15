@@ -3,7 +3,8 @@ import '../methods/sign_up_page.dart';
 import '../methods/parent_login_page.dart';
 import '../methods/child_registration.dart';
 import '../methods/child_main_page.dart';
-import '../methods/child_login.dart'; // Import Child Login Screen
+import '../methods/child_login.dart';
+import '../methods/parent_main_screen.dart';
 
 class NextScreen extends StatelessWidget {
   const NextScreen({super.key});
@@ -64,6 +65,27 @@ class NextScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+                    builder: (context) =>
+                        const ParentMainScreen(parentId: 'sampleParentId'),
+                  ),
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.purple[200]!),
+              ),
+              child: Text(
+                'Parent Main Page',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.purple[900]),
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => ChildRegistrationForm(
                             parentId: 'sampleParentId',
                           )),
@@ -101,14 +123,12 @@ class NextScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            // Button for Child Login Screen - Navigates to child login screen
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ChildLoginScreen()), // Opens Child Login Screen
+                      builder: (context) => const ChildLoginScreen()),
                 );
               },
               style: ButtonStyle(
@@ -116,7 +136,7 @@ class NextScreen extends StatelessWidget {
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
               ),
               child: Text(
-                'Child Login', // Button labeled for Child Login
+                'Child Login',
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.purple[900]),
               ),

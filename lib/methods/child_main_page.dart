@@ -8,7 +8,7 @@ import 'reward.dart';
 class ChildMainPage extends StatefulWidget {
   final String childId;
 
-  const ChildMainPage({Key? key, required this.childId}) : super(key: key);
+  const ChildMainPage({super.key, required this.childId});
 
   @override
   _ChildMainPageState createState() => _ChildMainPageState();
@@ -60,7 +60,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
     }
   }
 
-void _addSpending(String category) async {
+  void _addSpending(String category) async {
     double? amount = await _showSpendingDialog(category);
 
     if (amount != null && budget != null) {
@@ -91,7 +91,7 @@ void _addSpending(String category) async {
               hintText: 'Enter amount',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.purple, width: 1.5),
+                borderSide: const BorderSide(color: Colors.purple, width: 1.5),
               ),
             ),
           ),
@@ -113,7 +113,8 @@ void _addSpending(String category) async {
     );
   }
 
-  Widget _buildBudgetCategory(String title, double amount, Color color, IconData icon) {
+  Widget _buildBudgetCategory(
+      String title, double amount, Color color, IconData icon) {
     String tipText = tip?.displayTip(title, budget!) ?? '';
 
     return GestureDetector(
@@ -158,90 +159,87 @@ void _addSpending(String category) async {
     );
   }
 
- @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text(_isLoading ? 'Loading...' : 'Welcome, $childName'),
-      backgroundColor: Colors.purple[300],
-    ),
-    backgroundColor: Colors.white,
-    body: _isLoading
-        ? const Center(child: CircularProgressIndicator())
-        : Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Total Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 20),
-                    GridView.count(
-                      crossAxisCount: 2,
-                      padding: const EdgeInsets.all(16),
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.85,
-                      shrinkWrap: true,
-                      children: [
-                        _buildBudgetCategory(
-                            "Food & Snacks",
-                            budget?.foodAndSnacks ?? 0,
-                            Colors.pinkAccent,
-                            Icons.fastfood),
-                        _buildBudgetCategory(
-                            "Entertainment",
-                            budget?.entertainment ?? 0,
-                            Colors.blueAccent,
-                            Icons.videogame_asset),
-                        _buildBudgetCategory(
-                            "Needs",
-                            budget?.needs ?? 0,
-                            Colors.greenAccent,
-                            Icons.shopping_basket),
-                        _buildBudgetCategory(
-                            "Savings",
-                            budget?.savings ?? 0,
-                            Colors.orangeAccent,
-                            Icons.savings),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RewardSelectionScreen(childId: widget.childId),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_isLoading ? 'Loading...' : 'Welcome, $childName'),
+        backgroundColor: Colors.purple[300],
+      ),
+      backgroundColor: Colors.white,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Total Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.purple,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                      const SizedBox(height: 20),
+                      GridView.count(
+                        crossAxisCount: 2,
+                        padding: const EdgeInsets.all(16),
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.85,
+                        shrinkWrap: true,
+                        children: [
+                          _buildBudgetCategory(
+                              "Food & Snacks",
+                              budget?.foodAndSnacks ?? 0,
+                              Colors.pinkAccent,
+                              Icons.fastfood),
+                          _buildBudgetCategory(
+                              "Entertainment",
+                              budget?.entertainment ?? 0,
+                              Colors.blueAccent,
+                              Icons.videogame_asset),
+                          _buildBudgetCategory("Needs", budget?.needs ?? 0,
+                              Colors.greenAccent, Icons.shopping_basket),
+                          _buildBudgetCategory("Savings", budget?.savings ?? 0,
+                              Colors.orangeAccent, Icons.savings),
+                        ],
+                      ),
+                    ],
                   ),
-                  child: const Center(
-                    child: Text(
-                      'Select Your Reward!',
-                      style: TextStyle(fontSize: 16),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              RewardSelectionScreen(childId: widget.childId),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.purple,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Select Your Reward!',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-  );
-}
+              ],
+            ),
+    );
+  }
 }

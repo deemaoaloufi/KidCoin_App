@@ -13,7 +13,8 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isLoading = false;
 
   @override
@@ -55,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ParentLoginPage()),
+          MaterialPageRoute(builder: (context) => const ParentLoginPage()),
         );
       }
     } catch (e) {
@@ -75,7 +76,9 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         title: const Text(
           'Parent Sign Up',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), // White bold text
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold), // White bold text
         ),
         backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
       ),
@@ -87,7 +90,10 @@ class _SignUpPageState extends State<SignUpPage> {
           children: [
             const Text(
               'Create an Account',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF4A148C)), // Dark purple
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF4A148C)), // Dark purple
             ),
             const SizedBox(height: 20),
             TextField(
@@ -125,9 +131,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 : ElevatedButton(
                     onPressed: _signUp,
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[300]!), // Medium purple for button
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                          Colors.purple[300]!), // Medium purple for button
                     ),
-                    child: const Text('Sign Up', style: TextStyle(color: Colors.white)), // White text color
+                    child: const Text('Sign Up',
+                        style:
+                            TextStyle(color: Colors.white)), // White text color
                   ),
             const SizedBox(height: 10),
             TextButton(

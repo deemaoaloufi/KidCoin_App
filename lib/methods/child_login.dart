@@ -4,7 +4,7 @@ import 'child_main_page.dart'; // Importing the ChildMainPage
 
 // ChildLoginScreen child enters unique id and navigates to the main page.
 class ChildLoginScreen extends StatefulWidget {
-  const ChildLoginScreen({Key? key}) : super(key: key);
+  const ChildLoginScreen({super.key});
 
   @override
   _ChildLoginScreenState createState() => _ChildLoginScreenState();

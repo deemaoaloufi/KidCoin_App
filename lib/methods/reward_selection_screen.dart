@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class RewardSelectionScreen extends StatefulWidget {
   final String childId;
 
-  const RewardSelectionScreen({Key? key, required this.childId}) : super(key: key);
+  const RewardSelectionScreen({super.key, required this.childId});
 
   @override
   _RewardSelectionScreenState createState() => _RewardSelectionScreenState();
@@ -25,7 +25,8 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
   Future<void> fetchRewards() async {
     try {
       // Fetch the child document from Firestore using .where()
-      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
+          .instance
           .collection('children')
           .where('childId', isEqualTo: widget.childId)
           .get();
@@ -34,10 +35,12 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
         DocumentSnapshot<Map<String, dynamic>> doc = snapshot.docs.first;
 
         // Check if the document contains the 'rewards' field
-        if (doc.exists && doc.data() != null && doc.data()!.containsKey('rewards')) {
+        if (doc.exists &&
+            doc.data() != null &&
+            doc.data()!.containsKey('rewards')) {
           List<dynamic> rewardsData = doc.data()!['rewards'];
           setState(() {
-            rewards = rewardsData.cast<String>();  // Convert to list of strings
+            rewards = rewardsData.cast<String>(); // Convert to list of strings
             // Fetch the previously selected reward from Firestore
             selectedReward = doc.data()!.containsKey('selectedReward')
                 ? doc.data()!['selectedReward']
@@ -74,12 +77,13 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
       await FirebaseFirestore.instance
           .collection('children')
           .where('childId', isEqualTo: widget.childId)
-          .limit(1)  // Ensure only one document is updated
+          .limit(1) // Ensure only one document is updated
           .get()
           .then((snapshot) async {
         if (snapshot.docs.isNotEmpty) {
           // Proceed to update the selected reward
-          await snapshot.docs.first.reference.update({'selectedReward': reward});
+          await snapshot.docs.first.reference
+              .update({'selectedReward': reward});
 
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
@@ -88,14 +92,14 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
 
           // Optionally, update the local state (if needed)
           setState(() {
-            selectedReward = reward;  // Store the selected reward locally
+            selectedReward = reward; // Store the selected reward locally
           });
         }
       });
     } catch (e) {
       print("Error selecting reward: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to select reward")),
+        const SnackBar(content: Text("Failed to select reward")),
       );
     }
   }
@@ -117,23 +121,33 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
                   itemCount: rewards.length,
                   itemBuilder: (context, index) {
                     final reward = rewards[index];
-                    bool isSelected = reward == selectedReward; // Check if the reward is selected
+                    bool isSelected = reward ==
+                        selectedReward; // Check if the reward is selected
 
                     return GestureDetector(
                       onTap: () => selectReward(reward),
                       child: Card(
                         elevation: 4, // Add a little shadow effect
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12), // Rounded corners
+                          borderRadius:
+                              BorderRadius.circular(12), // Rounded corners
                         ),
                         margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        color: isSelected ? Colors.green[200] : Colors.white, // Change color to green if selected
+                        color: isSelected
+                            ? Colors.green[200]
+                            : Colors.white, // Change color to green if selected
                         child: ListTile(
                           contentPadding: const EdgeInsets.all(16.0),
-                          title: Text(reward, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                          trailing: isSelected 
-                              ? const Icon(Icons.check, color: Colors.white) // Show checkmark in white if selected
-                              : const Icon(Icons.check, color: Colors.grey), // Show grey checkmark if not selected
+                          title: Text(reward,
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          trailing: isSelected
+                              ? const Icon(Icons.check,
+                                  color: Colors
+                                      .white) // Show checkmark in white if selected
+                              : const Icon(Icons.check,
+                                  color: Colors
+                                      .grey), // Show grey checkmark if not selected
                         ),
                       ),
                     );

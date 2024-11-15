@@ -21,22 +21,30 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'Hello, KidCoin User!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple[900]), // Dark purple
             ),
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => NextScreen()), // Navigate to Next Screen
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const NextScreen()), // Navigate to Next Screen
                 );
               },
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[200]!), // Lighter purple for buttons
+                backgroundColor: WidgetStateProperty.all<Color>(
+                    Colors.purple[200]!), // Lighter purple for buttons
               ),
               child: Text(
                 'Access Other Screens',
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple for button text
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple[900]), // Dark purple for button text
               ),
             ),
           ],
@@ -46,4 +54,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
