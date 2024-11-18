@@ -7,7 +7,7 @@ import 'reward.dart';
 class ChildRegistrationForm extends StatefulWidget {
   final String parentId;
 
-  ChildRegistrationForm({required this.parentId});
+  const ChildRegistrationForm({super.key, required this.parentId});
 
   @override
   _ChildRegistrationState createState() => _ChildRegistrationState();
@@ -27,11 +27,15 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
   final TextEditingController _rewardController = TextEditingController();
 
   final Map<String, String> moodDefinitions = {
-    'Captain Saver': 'Savings= 40% \nFocuses on saving and budgeting for future needs.',
+    'Captain Saver':
+        'Savings= 40% \nFocuses on saving and budgeting for future needs.',
     'Captain Balanced': 'Balances spending and saving wisely.',
-    'Captain Funster': 'Entertainment= 40% \nEncourages spending on fun and enjoyment.',
-    'Captain Essential': 'Needs= 40% \nPrioritizes essential needs and expenses.',
-    'Captain Foodie': 'Food & Snack= 40% \nEncourages spending on food and snacks.',
+    'Captain Funster':
+        'Entertainment= 40% \nEncourages spending on fun and enjoyment.',
+    'Captain Essential':
+        'Needs= 40% \nPrioritizes essential needs and expenses.',
+    'Captain Foodie':
+        'Food & Snack= 40% \nEncourages spending on food and snacks.',
   };
 
   Future<void> _submitForm() async {
@@ -40,7 +44,9 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
 
       if (rewardManager.rewards.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please add at least one reward before submitting.')),
+          const SnackBar(
+              content:
+                  Text('Please add at least one reward before submitting.')),
         );
         return;
       }
@@ -108,7 +114,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
       _dateOfBirth = DateTime.parse(doc['dateOfBirth']);
       _dobController.text = _dateOfBirth!.toIso8601String().split('T')[0];
       _gender = doc['gender'];
-      _budget = doc['budget'] != null ? doc['budget'].toDouble() : null;
+      _budget = doc['budget']?.toDouble();
       final data = doc.data() as Map<String, dynamic>?;
 
       _mood = data != null && data.containsKey('mood') ? data['mood'] : '';
@@ -125,21 +131,26 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
 
   Widget _buildRewardBox(String reward) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4),
-      padding: EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.purple[100],
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(color: Colors.grey.shade400, blurRadius: 3, offset: Offset(0, 2))
+          BoxShadow(
+              color: Colors.grey.shade400,
+              blurRadius: 3,
+              offset: const Offset(0, 2))
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(reward, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(reward,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           IconButton(
-            icon: Icon(Icons.close, color: Colors.red),
+            icon: const Icon(Icons.close, color: Colors.red),
             onPressed: () {
               setState(() {
                 rewardManager.removeReward(reward);
@@ -155,7 +166,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Register and Manage Children',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -172,16 +183,20 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                   children: [
                     TextFormField(
                       initialValue: _name,
-                      decoration: InputDecoration(labelText: 'Child Name'),
-                      validator: (value) => value!.isEmpty ? 'Please enter child name' : null,
+                      decoration:
+                          const InputDecoration(labelText: 'Child Name'),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter child name' : null,
                       onSaved: (value) => _name = value!,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]+$')),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^[a-zA-Z\s]+$')),
                       ],
                     ),
                     TextFormField(
                       controller: _dobController,
-                      decoration: InputDecoration(labelText: 'Date of Birth'),
+                      decoration:
+                          const InputDecoration(labelText: 'Date of Birth'),
                       readOnly: true,
                       onTap: () => _pickDate(context),
                       validator: (value) => _dateOfBirth == null
@@ -190,7 +205,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                     ),
                     DropdownButtonFormField<String>(
                       value: _gender.isEmpty ? null : _gender,
-                      decoration: InputDecoration(labelText: 'Gender'),
+                      decoration: const InputDecoration(labelText: 'Gender'),
                       items: ['Male', 'Female']
                           .map((gender) => DropdownMenuItem(
                               value: gender, child: Text(gender)))
@@ -202,10 +217,11 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                           value == null ? 'Please select a gender' : null,
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Budget'),
+                      decoration: const InputDecoration(labelText: 'Budget'),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d{0,2})?$')),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+(\.\d{0,2})?$')),
                       ],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -221,9 +237,10 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                     ),
                     DropdownButtonFormField<String>(
                       value: _mood.isEmpty ? null : _mood,
-                      decoration: InputDecoration(labelText: 'Mood'),
+                      decoration: const InputDecoration(labelText: 'Mood'),
                       items: moodDefinitions.keys
-                          .map((mood) => DropdownMenuItem(value: mood, child: Text(mood)))
+                          .map((mood) =>
+                              DropdownMenuItem(value: mood, child: Text(mood)))
                           .toList(),
                       onChanged: (value) {
                         if (value != null) {
@@ -241,7 +258,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Close'),
+                                    child: const Text('Close'),
                                   ),
                                 ],
                               );
@@ -257,7 +274,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                       decoration: InputDecoration(
                         labelText: 'Add Reward',
                         suffixIcon: IconButton(
-                          icon: Icon(Icons.add, color: Colors.purple),
+                          icon: const Icon(Icons.add, color: Colors.purple),
                           onPressed: () {
                             if (_rewardController.text.isNotEmpty) {
                               setState(() {
@@ -270,10 +287,10 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ...rewardManager.rewards.map(_buildRewardBox).toList(),
+                    ...rewardManager.rewards.map(_buildRewardBox),
                     const SizedBox(height: 20),
                     _isLoading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: _submitForm,
                             child: Text(_editingChildId == null
@@ -291,14 +308,14 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (snapshot.data!.docs.isEmpty) {
-                    return Center(child: Text('No children registered.'));
+                    return const Center(child: Text('No children registered.'));
                   }
                   return ListView(
                     shrinkWrap: true, // Added this to avoid infinite height
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     children: snapshot.data!.docs.map((doc) {
                       return ListTile(
                         title: Text(doc['name']),
@@ -308,17 +325,18 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               onPressed: () {
                                 _populateFormForEdit(doc);
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () async {
                                 await ChildService().deleteChild(doc.id);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Child deleted')),
+                                  const SnackBar(
+                                      content: Text('Child deleted')),
                                 );
                               },
                             ),

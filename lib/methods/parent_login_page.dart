@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'sign_up_page.dart';
-import 'child_registration.dart'; // Import ChildRegistrationForm
+import 'parent_main_screen.dart'; // Import ParentMainScreen
 
 class ParentLoginPage extends StatefulWidget {
   const ParentLoginPage({super.key});
@@ -44,11 +44,14 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
-        // Pass user.uid as parentId to ChildRegistrationForm
+
+        // Navigate to ParentMainScreen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ChildRegistrationForm(parentId: user.uid), // Pass the parent ID
+            builder: (context) => ParentMainScreen(
+              parentId: user.uid, // Pass the parentId
+            ),
           ),
         );
       }
@@ -66,7 +69,7 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
   void _navigateToSignUp() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUpPage()), // Assuming SignUpPage is defined
+      MaterialPageRoute(builder: (context) => const SignUpPage()),
     );
   }
 
@@ -76,9 +79,11 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
       appBar: AppBar(
         title: const Text(
           'Parent Login',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold), // White bold text
+          style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold), // White bold text
         ),
-        backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
+        backgroundColor: Colors.purple[300],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,7 +92,10 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
           children: [
             Text(
               'Log In to KidCoin',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple text
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple[900]), // Dark purple text
             ),
             const SizedBox(height: 20),
             TextField(
@@ -112,12 +120,14 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _login,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.purple[200]!), // Lighter purple for buttons
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple[200]!,
                     ),
                     child: Text(
                       'Login',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple[900]), // Dark purple for button text
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.purple[900]),
                     ),
                   ),
             const SizedBox(height: 10),
@@ -125,13 +135,13 @@ class _ParentLoginPageState extends State<ParentLoginPage> {
               onPressed: _navigateToSignUp,
               child: Text(
                 'Don’t have an account? Sign Up',
-                style: TextStyle(color: Colors.purple[900]), // Dark purple for sign-up text
+                style: TextStyle(color: Colors.purple[900]),
               ),
             ),
           ],
         ),
       ),
-      backgroundColor: Colors.white, // Set background color to white
+      backgroundColor: Colors.white,
     );
   }
 }

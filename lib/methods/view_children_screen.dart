@@ -60,4 +60,8 @@ class ViewChildrenScreen extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3d56edda834ad61f0588f94baab7d6e32cc138ca

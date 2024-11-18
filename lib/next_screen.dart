@@ -107,6 +107,27 @@ class NextScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+                    builder: (context) =>
+                        const ParentMainScreen(parentId: 'sampleParentId'),
+                  ),
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.purple[200]!),
+              ),
+              child: Text(
+                'Parent Main Page',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.purple[900]),
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => ChildRegistrationForm(
                             parentId: 'sampleParentId',
                           )),
@@ -170,6 +191,7 @@ class NextScreen extends StatelessWidget {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
               ),
+<<<<<<< HEAD
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -181,6 +203,12 @@ class NextScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold, color: Colors.purple[900]),
                   ),
                 ],
+=======
+              child: Text(
+                'Child Login',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.purple[900]),
+>>>>>>> 3d56edda834ad61f0588f94baab7d6e32cc138ca
               ),
             ),
           ],
