@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import '../services/child_service.dart';
 import 'reward.dart';
 import 'view_children_screen.dart';
@@ -300,6 +301,10 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
       itemCount: snapshot.data!.docs.length,
       itemBuilder: (context, index) {
         var doc = snapshot.data!.docs[index];
+        // Format DOB
+        DateTime dob = DateTime.parse(doc['dateOfBirth']);
+        String formattedDob = DateFormat('MM/dd/yyyy').format(dob);
+
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           elevation: 4,
@@ -314,7 +319,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                 ),
                 const SizedBox(height: 4),
                 Text("Child ID: ${doc['childId']}"),
-                Text("DOB: ${doc['dateOfBirth']}"),
+                Text("DOB: $formattedDob"),  // Display formatted DOB
                 Text("Gender: ${doc['gender']}"),
                 Text("Budget: \$${doc['budget'] ?? 'N/A'}"),
                 Text("Mood: ${doc['mood'] ?? 'N/A'}"),
