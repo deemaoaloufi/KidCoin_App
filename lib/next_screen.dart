@@ -191,7 +191,6 @@ class NextScreen extends StatelessWidget {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
               ),
-<<<<<<< HEAD
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -203,12 +202,6 @@ class NextScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold, color: Colors.purple[900]),
                   ),
                 ],
-=======
-              child: Text(
-                'Child Login',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.purple[900]),
->>>>>>> 3d56edda834ad61f0588f94baab7d6e32cc138ca
               ),
             ),
           ],
