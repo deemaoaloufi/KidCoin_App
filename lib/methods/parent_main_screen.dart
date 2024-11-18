@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'child_registration.dart';
-import 'view_children_screen.dart'; // Import corrected child list screen
-// ignore: unused_import
-import 'child_progress_screen.dart'; // Import corrected child progress screen
+import 'view_children_screen.dart';
+import 'sign_up_page.dart';
+import 'parent_login_page.dart';
 
 class ParentMainScreen extends StatelessWidget {
   final String parentId;
@@ -21,47 +21,96 @@ class ParentMainScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ChildRegistrationForm(parentId: parentId),
+        child: Center( // Center the content horizontally and vertically
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // After Parent Sign In, navigate directly to Child Registration
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChildRegistrationForm(parentId: parentId),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[200],
+                ),
+                child: Text(
+                  'Register a Child',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple[900], // Purple 900 color for text
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple[200],
+                ),
               ),
-              child: const Text(
-                'Register a Child',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ViewChildrenScreen(parentId: parentId),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewChildrenScreen(parentId: parentId),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[200],
+                ),
+                child: Text(
+                  'View Children List',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple[900], // Purple 900 color for text
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple[200],
+                ),
               ),
-              child: const Text(
-                'View Children List',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SignUpPage(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[200],
+                ),
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple[900], // Purple 900 color for text
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ParentLoginPage(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[200],
+                ),
+                child: Text(
+                  'Sign In',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purple[900], // Purple 900 color for text
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       backgroundColor: Colors.white,

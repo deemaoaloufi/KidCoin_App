@@ -16,6 +16,7 @@ class _ChildProgressScreenState extends State<ChildProgressScreen> {
   Budget? budget;
   bool _isLoading = true;
   String? childName;
+  String? selectedReward; // Variable to hold the selected reward
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _ChildProgressScreenState extends State<ChildProgressScreen> {
         final data = snapshot.docs.first.data();
         setState(() {
           childName = data['name'];
+          selectedReward = data['selectedReward']; // Fetch selected reward
           budget = Budget(widget.childId)
             ..totalRemaining = data['budget']?.toDouble() ?? 0.0
             ..setMood(data['mood'] ?? 'Captain Balanced');
@@ -75,9 +77,11 @@ class _ChildProgressScreenState extends State<ChildProgressScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            childName != null ? "$childName's Progress" : "Child Progress"),
-        backgroundColor: Colors.purple[300],
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            childName != null ? "$childName's Progress" : "Child Progress"),        
+        backgroundColor: Colors.purple[300], // Match the registration bar color
       ),
+      backgroundColor: Colors.white, // Set background to white
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -85,6 +89,16 @@ class _ChildProgressScreenState extends State<ChildProgressScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Display selected reward if available, above the categories
+                  if (selectedReward != null) 
+                    Text(
+                      "Selected Reward: $selectedReward",
+                      style: TextStyle(
+                          fontSize: 16, 
+                          fontWeight: FontWeight.bold, 
+                          color: Colors.purple[700]), // Purple color for the reward
+                    ),
+                  const SizedBox(height: 20),
                   Text(
                     "Total Remaining Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
                     style: const TextStyle(

@@ -97,9 +97,9 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
       appBar: AppBar(
         title: const Text(
           'Select a Reward',
-          style: TextStyle(fontFamily: 'Comic Sans MS', fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: Color.fromARGB(255, 222, 181, 234),
+        backgroundColor: Colors.purple[300],
         elevation: 6,
       ),
       backgroundColor: Colors.white,
@@ -132,13 +132,7 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
                                 decoration: BoxDecoration(
                                   color: isSelected ? const Color.fromRGBO(239, 206, 248, 1) : const Color.fromARGB(255, 224, 249, 255),
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: isSelected ? const Color.fromARGB(255, 163, 82, 154) : const Color.fromARGB(255, 162, 214, 228),
-                                      blurRadius: 8.0,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
+                                  boxShadow: [], // Removed the shadow
                                 ),
                                 child: Row(
                                   children: [
@@ -169,15 +163,16 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:const Color.fromARGB(255, 241, 154, 251),
-                    padding: const EdgeInsets.symmetric(horizontal:22,vertical: 10),
+                    backgroundColor: Colors.purple[100], 
+                    foregroundColor: Colors.purple[900],
+                    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
                   child: const Text(
                     'Return to Main Page',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.black),
+                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],

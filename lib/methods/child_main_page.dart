@@ -163,8 +163,12 @@ class _ChildMainPageState extends State<ChildMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isLoading ? 'Loading...' : 'Welcome, $childName'),
+        title: Text
+        (_isLoading ? 'Loading...' : 'Welcome, $childName',
+        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         backgroundColor: Colors.purple[300],
+        elevation: 6,
       ),
       backgroundColor: Colors.white,
       body: _isLoading
@@ -211,33 +215,35 @@ class _ChildMainPageState extends State<ChildMainPage> {
                 ),
                 const Spacer(),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              RewardSelectionScreen(childId: widget.childId),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Colors.purple,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Select Your Reward!',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
-                ),
+  padding: const EdgeInsets.all(16.0),
+  child: ElevatedButton(
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RewardSelectionScreen(childId: widget.childId),
+        ),
+      );
+    },
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.purple[100], // Matching the style used in registration form
+      foregroundColor: Colors.purple[900],
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40), // Adjusted for oval shape
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30), // Rounded but not circular
+      ),
+      elevation: 3,
+    ),
+    child: const Text(
+      'Select Your Reward!',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+  ),
+)
+
+
+
+   
               ],
             ),
     );

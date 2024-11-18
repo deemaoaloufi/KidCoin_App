@@ -84,8 +84,11 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Child Login'),
+        title: const Text('Child Login',
+         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         backgroundColor: Colors.purple[300],
+        elevation: 6,
       ),
       backgroundColor: Colors.white, // Set background to white
       body: _isLoading

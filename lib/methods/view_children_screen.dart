@@ -21,7 +21,14 @@ class ViewChildrenScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Your Children")),
+      appBar: AppBar(
+        title: const Text(
+          "Your Children List",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.purple[300],
+      ),
+      backgroundColor: Colors.white,
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchChildren(),
         builder: (context, snapshot) {
@@ -29,30 +36,55 @@ class ViewChildrenScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(
+              child: Text(
+                "Error: ${snapshot.error}",
+                style: const TextStyle(color: Colors.red, fontSize: 16),
+              ),
+            );
           }
           final children = snapshot.data ?? [];
           if (children.isEmpty) {
-            return const Center(child: Text("No children registered."));
+            return const Center(
+              child: Text(
+                "No children registered.",
+                style: TextStyle(fontSize: 18, color: Color.fromARGB(255, 255, 255, 255)),
+              ),
+            );
           }
 
           return ListView.builder(
+            padding: const EdgeInsets.all(8.0),
             itemCount: children.length,
             itemBuilder: (context, index) {
               final child = children[index];
-              return ListTile(
-                title: Text(child['name'] ?? 'No Name'),
-                subtitle: Text("Mood: ${child['mood'] ?? 'No Mood'}"),
-                trailing: const Icon(Icons.arrow_forward),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ChildProgressScreen(childId: child['childId']),
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 6.0),
+                elevation: 2,
+                child: ListTile(
+                  title: Text(
+                    child['name'] ?? 'No Name',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.deepPurple,
                     ),
-                  );
-                },
+                  ),
+                  subtitle: Text(
+                    "Mood: ${child['mood'] ?? 'No Mood'}",
+                    style: const TextStyle(fontSize: 16, color: Colors.black54),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward, color: Colors.deepPurple),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ChildProgressScreen(childId: child['childId']),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );
