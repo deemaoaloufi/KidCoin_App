@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import url_launcher
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'budget.dart';
 import 'reward_selection_screen.dart';
@@ -64,7 +65,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
     double? amount = await _showSpendingDialog(category);
 
     if (amount != null && budget != null) {
-      String? error = budget!.addSpending(category, amount);
+      String? error = await budget!.addSpending(category, amount);
 
       if (error != null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -106,6 +107,52 @@ class _ChildMainPageState extends State<ChildMainPage> {
                 Navigator.of(context).pop(amount);
               },
               child: const Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Method to launch the URL
+  Future<void> _launchGameURL() async {
+    const url = 'https://www.kongregate.com/games/BarbarianGames/into-space-2';
+    final Uri uri = Uri.parse(url);
+
+    try {
+      await launchUrl(
+        uri,
+        mode: LaunchMode
+            .externalApplication, // uses the system browser to open the game
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not launch the game. Error: $e')),
+      );
+    }
+  }
+
+  // Show dialog for playing the game
+  void _showPlayGameDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('You are amazing and you deserve to have fun!'),
+          content: const Text('Do you want to play INTO SPACE?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _launchGameURL(); // Launch game URL when 'Yes' is pressed
+              },
+              child: const Text('Yes'),
             ),
           ],
         );
@@ -163,9 +210,10 @@ class _ChildMainPageState extends State<ChildMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text
-        (_isLoading ? 'Loading...' : 'Welcome, $childName',
-        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        title: Text(
+          _isLoading ? 'Loading...' : 'Welcome, $childName',
+          style:
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.purple[300],
         elevation: 6,
@@ -213,37 +261,63 @@ class _ChildMainPageState extends State<ChildMainPage> {
                     ],
                   ),
                 ),
-                const Spacer(),
+                const Spacer(flex: 10),
                 Padding(
-  padding: const EdgeInsets.all(16.0),
-  child: ElevatedButton(
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => RewardSelectionScreen(childId: widget.childId),
-        ),
-      );
-    },
-    style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.purple[100], // Matching the style used in registration form
-      foregroundColor: Colors.purple[900],
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 40), // Adjusted for oval shape
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30), // Rounded but not circular
-      ),
-      elevation: 3,
-    ),
-    child: const Text(
-      'Select Your Reward!',
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-    ),
-  ),
-)
-
-
-
-   
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              RewardSelectionScreen(childId: widget.childId),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple[
+                          100], // Matching the style used in registration form
+                      foregroundColor: Colors.purple[900],
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16,
+                          horizontal: 40), // Adjusted for oval shape
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            30), // Rounded but not circular
+                      ),
+                      elevation: 3,
+                    ),
+                    child: const Text(
+                      'Select Your Reward!',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10), // Adding some space between buttons
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _showPlayGameDialog(); // Show the dialog when button is pressed
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.purple[900],
+                      foregroundColor: Colors.purple[100],
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      elevation: 3,
+                    ),
+                    child: const Text(
+                      'Play INTO SPACE!',
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               ],
             ),
     );
