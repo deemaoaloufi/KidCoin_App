@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart'; //  this import for Firestore to update the changes!
+
 class Budget {
   String childId; // Identifier for the child
   double foodAndSnacks; // Budget for food and snacks
@@ -17,7 +19,7 @@ class Budget {
         mood = "";
 
   // Method to add spending in a specified category
-  String? addSpending(String category, double amount) {
+  Future<String?> addSpending(String category, double amount) async {
     if (amount < 0) {
       return 'Amount can not be negative'; // Error for zero or negative values
     }
@@ -25,7 +27,10 @@ class Budget {
     if (amount == 0) {
       return 'No spending amount entered'; // Error for zero or negative values
     }
-    
+
+    // calling the method to Initialize budget categories
+    await _initializeBudgetIfNeeded();
+
     switch (category) {
       case 'Food & Snacks':
         if (amount > foodAndSnacks) {
@@ -61,7 +66,51 @@ class Budget {
 
     // Update total remaining budget
     totalRemaining = calculatedTotalBudget;
+
+    // Save the updated budget to Firebase
+    FirebaseFirestore.instance.collection('children').doc(childId).update({
+      'foodAndSnacks': foodAndSnacks,
+      'entertainment': entertainment,
+      'needs': needs,
+      'savings': savings,
+      'totalRemaining': totalRemaining,
+    }).then((_) {
+      print("Budget updated in Firestore");
+    }).catchError((error) {
+      print("Failed to update budget: $error");
+    });
+
     return null; // No error
+  }
+
+  //  method to initialize the budget fields in Firestore
+  Future<void> _initializeBudgetIfNeeded() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('children')
+        .doc(childId)
+        .get();
+
+    if (!doc.exists) {
+      // If the child document doesn't exist, create it with default budget values
+      await FirebaseFirestore.instance.collection('children').doc(childId).set({
+        'foodAndSnacks': 0.0,
+        'entertainment': 0.0,
+        'needs': 0.0,
+        'savings': 0.0,
+        'totalRemaining': 0.0,
+      }).then((_) {
+        print("New child budget initialized in Firestore");
+      }).catchError((error) {
+        print("Failed to initialize child budget: $error");
+      });
+    } else {
+      // If the child document exists, load the existing values
+      foodAndSnacks = doc.get('foodAndSnacks') ?? 0.0;
+      entertainment = doc.get('entertainment') ?? 0.0;
+      needs = doc.get('needs') ?? 0.0;
+      savings = doc.get('savings') ?? 0.0;
+      totalRemaining = doc.get('totalRemaining') ?? 0.0;
+    }
   }
 
   // Getter to calculate the remaining total budget
