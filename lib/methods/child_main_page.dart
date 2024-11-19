@@ -92,7 +92,8 @@ class _ChildMainPageState extends State<ChildMainPage> {
               hintText: 'Enter amount',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.purple, width: 1.5),
+                borderSide: const BorderSide(
+                    color: Color.fromARGB(255, 206, 155, 215), width: 1.5),
               ),
             ),
           ),
@@ -160,44 +161,88 @@ class _ChildMainPageState extends State<ChildMainPage> {
     );
   }
 
+  void _showTipsDialog() {
+    if (tip != null && budget != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Tips for Budget Categories'),
+            content: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      "Food & Snacks: ${tip!.displayTip('Food & Snacks', budget!)}"),
+                  const SizedBox(height: 8),
+                  Text(
+                      "Entertainment: ${tip!.displayTip('Entertainment', budget!)}"),
+                  const SizedBox(height: 8),
+                  Text("Needs: ${tip!.displayTip('Needs', budget!)}"),
+                  const SizedBox(height: 8),
+                  Text("Savings: ${tip!.displayTip('Savings', budget!)}"),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   Widget _buildBudgetCategory(
       String title, double amount, Color color, IconData icon) {
-    String tipText = tip?.displayTip(title, budget!) ?? '';
-
     return GestureDetector(
       onTap: () => _addSpending(title),
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: color, width: 1.5),
+          color: color.withOpacity(0.2), // Soft color for the box
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color, width: 0),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            CircleAvatar(
-              radius: 28,
-              backgroundColor: color.withOpacity(0.2),
-              child: Icon(icon, size: 28, color: color),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "\$${amount.toStringAsFixed(2)}",
-              style: TextStyle(color: color),
-            ),
-            const SizedBox(height: 8),
-            Flexible(
+            // Title at the top-left corner
+            Positioned(
+              top: 5,
+              left: 8,
               child: Text(
-                tipText,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 11.5, color: Colors.blueGrey),
-                maxLines: 3,
-                overflow: TextOverflow.visible,
+                title,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: color,
+                ),
+              ),
+            ),
+            // Icon at the bottom-right corner
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: CircleAvatar(
+                radius: 28,
+                backgroundColor: color.withOpacity(0.2),
+                child: Icon(icon, size: 28, color: color),
+              ),
+            ),
+            // Amount at the center of the box (optional)
+            Positioned(
+              bottom: 20,
+              left: 8,
+              child: Text(
+                "\$${amount.toStringAsFixed(2)}",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],
@@ -209,116 +254,197 @@ class _ChildMainPageState extends State<ChildMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _isLoading ? 'Loading...' : 'Welcome, $childName',
-          style:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(120.0), // Height of the AppBar
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 192, 128, 219), // A modern purple color
+                Color.fromARGB(
+                    255, 222, 181, 234), // A complementary pink color
+              ],
+            ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 10,
+                offset: Offset(6, 4),
+              ),
+            ],
+          ),
+          child: AppBar(
+            title: Text(
+              _isLoading ? 'Loading...' : 'Welcome, $childName',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+                color: Colors.white,
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0, // Remove default shadow of the AppBar
+          ),
         ),
-        backgroundColor: Colors.purple[300],
-        elevation: 6,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 246, 244, 251),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Total Budget: \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 20),
-                      GridView.count(
-                        crossAxisCount: 2,
-                        padding: const EdgeInsets.all(16),
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.85,
-                        shrinkWrap: true,
-                        children: [
-                          _buildBudgetCategory(
-                              "Food & Snacks",
-                              budget?.foodAndSnacks ?? 0,
-                              Colors.pinkAccent,
-                              Icons.fastfood),
-                          _buildBudgetCategory(
-                              "Entertainment",
-                              budget?.entertainment ?? 0,
-                              Colors.blueAccent,
-                              Icons.videogame_asset),
-                          _buildBudgetCategory("Needs", budget?.needs ?? 0,
-                              Colors.greenAccent, Icons.shopping_basket),
-                          _buildBudgetCategory("Savings", budget?.savings ?? 0,
-                              Colors.orangeAccent, Icons.savings),
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    // Row for buttons on top of the budget box
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Reward Button
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RewardSelectionScreen(
+                                    childId: widget.childId),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                const Color.fromARGB(255, 238, 133, 242),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          icon: Icon(Icons.gif, size: 18),
+                          label: const Text(
+                            'Select Reward',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        // Tips Button with icon
+                        ElevatedButton.icon(
+                          onPressed: _showTipsDialog,
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                const Color.fromARGB(255, 238, 133, 242),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          icon: Icon(Icons.lightbulb_outline, size: 18),
+                          label: const Text(
+                            'Get Tips',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Container for Total Budget and Categories
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                const Spacer(flex: 10),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              RewardSelectionScreen(childId: widget.childId),
+                      child: Column(
+                        children: [
+                          // Total Budget Section
+                          Text(
+                            "Total Budget:\n     \$${budget?.totalRemaining.toStringAsFixed(2) ?? '0.00'}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 122, 7, 175),
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          // Budget Category Boxes
+                          GridView.count(
+                            shrinkWrap: true,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            childAspectRatio:
+                                1.3, // Aspect ratio to control item size relative to available space
+                            children: [
+                              _buildBudgetCategory(
+                                  'Food & Snacks',
+                                  budget?.foodAndSnacks ?? 0.0,
+                                  Colors.green,
+                                  Icons.fastfood),
+                              _buildBudgetCategory(
+                                  'Entertainment',
+                                  budget?.entertainment ?? 0.0,
+                                  Colors.blue,
+                                  Icons.movie),
+                              _buildBudgetCategory(
+                                  'Needs',
+                                  budget?.needs ?? 0.0,
+                                  Colors.orange,
+                                  Icons.shopping_cart),
+                              _buildBudgetCategory(
+                                'Savings',
+                                budget?.savings ?? 0.0,
+                                const Color.fromARGB(255, 229, 120, 169),
+                                Icons.save,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(
+                        height: 10), // Adding some space between buttons
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _showPlayGameDialog(); // Show the dialog when button is pressed
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple[900],
+                          foregroundColor: Colors.purple[100],
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          elevation: 3,
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple[
-                          100], // Matching the style used in registration form
-                      foregroundColor: Colors.purple[900],
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16,
-                          horizontal: 40), // Adjusted for oval shape
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            30), // Rounded but not circular
+                        child: const Text(
+                          'Play INTO SPACE!',
+                          style: TextStyle(
+                              fontSize: 17, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                      elevation: 3,
                     ),
-                    child: const Text(
-                      'Select Your Reward!',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 10), // Adding some space between buttons
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _showPlayGameDialog(); // Show the dialog when button is pressed
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple[900],
-                      foregroundColor: Colors.purple[100],
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      elevation: 3,
-                    ),
-                    child: const Text(
-                      'Play INTO SPACE!',
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
     );
   }
