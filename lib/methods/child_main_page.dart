@@ -19,6 +19,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
   Budget? budget;
   Tip? tip;
   String? childName;
+  String? childMood; // To store the mood for display
   bool _isLoading = true;
   RewardManager rewardManager = RewardManager();
   bool isRewardLoading = true;
@@ -42,13 +43,13 @@ class _ChildMainPageState extends State<ChildMainPage> {
         setState(() {
           childName = doc['name'];
           double totalBudget = doc['budget']?.toDouble() ?? 0.0;
-          String childMood = doc['mood'] ?? 'Captain Balanced';
+           childMood = doc['mood'] ?? 'Captain Balanced';
 
           budget = Budget(widget.childId)
             ..totalRemaining = totalBudget
-            ..setMood(childMood);
+            ..setMood(childMood!);
 
-          tip = Tip(childMood);
+          tip = Tip(childMood!);
 
           _isLoading = false;
         });
@@ -263,8 +264,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
               end: Alignment.bottomRight,
               colors: [
                 Color.fromARGB(255, 192, 128, 219), // A modern purple color
-                Color.fromARGB(
-                    255, 222, 181, 234), // A complementary pink color
+                Color.fromARGB(255, 222, 181, 234), // A complementary pink color
               ],
             ),
             borderRadius: const BorderRadius.only(
@@ -279,17 +279,32 @@ class _ChildMainPageState extends State<ChildMainPage> {
               ),
             ],
           ),
-          child: AppBar(
-            title: Text(
-              _isLoading ? 'Loading...' : 'Welcome, $childName',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: Colors.white,
-              ),
+                  child: AppBar(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 5),
+                Text(
+                  _isLoading ? 'Loading...' : 'Welcome, $childName',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                 
+                if (childMood != null)
+                  Text(
+                    '$childMood !',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: const Color.fromARGB(255, 143, 20, 147),
+                    ),
+                  ),
+              ],
             ),
             backgroundColor: Colors.transparent,
-            elevation: 0, // Remove default shadow of the AppBar
+            elevation: 0,
           ),
         ),
       ),
