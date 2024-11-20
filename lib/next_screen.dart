@@ -10,16 +10,28 @@ class NextScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Next Screen',
+          'KidCoin User',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.purple[300],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
+      body: Stack(
+        children: [
+          // Background image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/UI_SecondPage.png'),
+                fit: BoxFit.cover, // Cover the entire screen
+              ),
+            ),
+          ),
+          // Buttons
+          Positioned(
+            top: 360,
+            left: 50,
+            right: 50,
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -32,21 +44,29 @@ class NextScreen extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(width: 8),
-                  Text(
-                    'Parent Main Page',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.purple[900]),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ],
+                ),
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                ),
+              ),
+              child: Text(
+                'Parent',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.purple[900]),
               ),
             ),
-            const SizedBox(height: 10),
-            ElevatedButton(
+          ),
+          Positioned(
+            top: 660,
+            left: 50,
+            right: 50,
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
@@ -58,23 +78,26 @@ class NextScreen extends StatelessWidget {
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Colors.purple[200]!),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(width: 8),
-                  Text(
-                    'Child Login',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.purple[900]),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                ],
+                ),
+                padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                ),
+              ),
+              child: Text(
+                'Child',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.purple[900]),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      backgroundColor: Colors.white,
     );
   }
 }
