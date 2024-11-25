@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'next_screen.dart'; // Import Next Screen
+import 'next_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,50 +7,64 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'KidCoin App',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.purple[300], // Lighter purple for the AppBar
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20),
-            Text(
-              'Hello, KidCoin User!',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple[900]), // Dark purple
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const NextScreen()), // Navigate to Next Screen
-                );
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all<Color>(
-                    Colors.purple[200]!), // Lighter purple for buttons
-              ),
-              child: Text(
-                'Access Other Screens',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple[900]), // Dark purple for button text
+      body: Stack(
+        children: [
+          // Background
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/UI_FirstPage.png'),
+                fit: BoxFit.cover,
               ),
             ),
-          ],
-        ),
+          ),
+          // Button
+          Positioned(
+            bottom: 280,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color.fromARGB(255, 51, 7, 70), Colors.purple],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NextScreen(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 60), // Button size
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Access The App',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-      backgroundColor: Colors.white, // Set background color to white
     );
   }
 }

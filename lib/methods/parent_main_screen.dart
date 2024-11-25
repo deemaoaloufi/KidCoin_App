@@ -15,105 +15,135 @@ class ParentMainScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Parent Main Page',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         backgroundColor: Colors.purple[300],
+        elevation: 6,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center( // Center the content horizontally and vertically
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // After Parent Sign In, navigate directly to Child Registration
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChildRegistrationForm(parentId: parentId),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/UI_ThirdPage.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 45),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildButton(
+                      context: context,
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ChildRegistrationForm(parentId: parentId),
+                          ),
+                        );
+                      },
+                      label: 'Register a Child',
+                      icon: Icons.person_add,
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[200],
-                ),
-                child: Text(
-                  'Register a Child',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple[900], // Purple 900 color for text
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ViewChildrenScreen(parentId: parentId),
+                    _buildButton(
+                      context: context,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ViewChildrenScreen(parentId: parentId),
+                          ),
+                        );
+                      },
+                      label: 'View Children',
+                      icon: Icons.list_alt,
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[200],
+                  ],
                 ),
-                child: Text(
-                  'View Children List',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple[900], // Purple 900 color for text
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SignUpPage(),
+                const SizedBox(height: 70),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildButton(
+                      context: context,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpPage(),
+                          ),
+                        );
+                      },
+                      label: 'Sign Up',
+                      icon: Icons.app_registration,
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[200],
-                ),
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple[900], // Purple 900 color for text
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ParentLoginPage(),
+                    _buildButton(
+                      context: context,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ParentLoginPage(),
+                          ),
+                        );
+                      },
+                      label: 'Sign In',
+                      icon: Icons.login,
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.purple[200],
+                  ],
                 ),
-                child: Text(
-                  'Sign In',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.purple[900], // Purple 900 color for text
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
       backgroundColor: Colors.white,
+    );
+  }
+
+  Widget _buildButton({
+    required BuildContext context,
+    required VoidCallback onPressed,
+    required String label,
+    required IconData icon,
+  }) {
+    return SizedBox(
+      width: 120,
+      height: 120,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.purple[100],
+          foregroundColor: Colors.purple[900],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          padding: const EdgeInsets.all(12),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: Colors.purple[900]),
+            const SizedBox(height: 8),
+            FittedBox(
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
