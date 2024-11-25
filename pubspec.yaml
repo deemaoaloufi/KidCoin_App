@@ -74,6 +74,7 @@ flutter:
  - assets/UI_SecondPage.png
  - assets/UI_ThirdPage.png
  - assets/UI_ChildList.gif
+ - assets/ParentUI.png
  - assets\icons\girlIcon.png
  - assets\icons\boyIcon.png
 

@@ -137,6 +137,7 @@ class ParentMainScreen extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 ),
                 textAlign: TextAlign.center,
               ),

@@ -15,6 +15,7 @@ class NextScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.purple[300],
       ),
+      backgroundColor: Colors.white, // Set the background to white
       body: Stack(
         children: [
           // Background image
@@ -56,9 +57,10 @@ class NextScreen extends StatelessWidget {
               child: Text(
                 'Parent',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.purple[900]),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.purple[900],
+                ),
               ),
             ),
           ),
@@ -90,9 +92,10 @@ class NextScreen extends StatelessWidget {
               child: Text(
                 'Child',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.purple[900]),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.purple[900],
+                ),
               ),
             ),
           ),
