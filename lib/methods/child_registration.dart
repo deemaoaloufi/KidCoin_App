@@ -31,11 +31,15 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
   final TextEditingController _rewardController = TextEditingController();
 
   final Map<String, String> moodDefinitions = {
-    'Captain Saver': 'Savings= 40%\nFocuses on saving and budgeting for future needs.',
+    'Captain Saver':
+        'Savings= 40%\nFocuses on saving and budgeting for future needs.',
     'Captain Balanced': 'Balances spending and saving wisely.',
-    'Captain Funster': 'Entertainment= 40%\nEncourages spending on fun and enjoyment.',
-    'Captain Essential': 'Needs= 40%\nPrioritizes essential needs and expenses.',
-    'Captain Foodie': 'Food & Snack= 40%\nEncourages spending on food and snacks.',
+    'Captain Funster':
+        'Entertainment= 40%\nEncourages spending on fun and enjoyment.',
+    'Captain Essential':
+        'Needs= 40%\nPrioritizes essential needs and expenses.',
+    'Captain Foodie':
+        'Food & Snack= 40%\nEncourages spending on food and snacks.',
   };
 
   Future<void> _submitForm() async {
@@ -44,7 +48,9 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
 
       if (rewardManager.rewards.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please add at least one reward before submitting.')),
+          const SnackBar(
+              content:
+                  Text('Please add at least one reward before submitting.')),
         );
         return;
       }
@@ -57,6 +63,7 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
         'mood': _mood,
         'parentId': widget.parentId,
         'rewards': rewardManager.rewards,
+        'timePeriod': _timePeriod,
       };
 
       setState(() {
@@ -145,7 +152,9 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(reward, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(reward,
+              style:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.red),
             onPressed: () {
@@ -180,36 +189,45 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                   children: [
                     TextFormField(
                       initialValue: _name,
-                      decoration: const InputDecoration(labelText: 'Child Name'),
-                      validator: (value) => value!.isEmpty ? 'Please enter child name' : null,
+                      decoration:
+                          const InputDecoration(labelText: 'Child Name'),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter child name' : null,
                       onSaved: (value) => _name = value!,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z\s]+$')),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^[a-zA-Z\s]+$')),
                       ],
                     ),
                     TextFormField(
                       controller: _dobController,
-                      decoration: const InputDecoration(labelText: 'Date of Birth'),
+                      decoration:
+                          const InputDecoration(labelText: 'Date of Birth'),
                       readOnly: true,
                       onTap: () => _pickDate(context),
-                      validator: (value) => _dateOfBirth == null ? 'Please select a date of birth' : null,
+                      validator: (value) => _dateOfBirth == null
+                          ? 'Please select a date of birth'
+                          : null,
                     ),
                     DropdownButtonFormField<String>(
                       value: _gender.isEmpty ? null : _gender,
                       decoration: const InputDecoration(labelText: 'Gender'),
                       items: ['Male', 'Female']
-                          .map((gender) => DropdownMenuItem(value: gender, child: Text(gender)))
+                          .map((gender) => DropdownMenuItem(
+                              value: gender, child: Text(gender)))
                           .toList(),
                       onChanged: (value) => setState(() {
                         _gender = value!;
                       }),
-                      validator: (value) => value == null ? 'Please select a gender' : null,
+                      validator: (value) =>
+                          value == null ? 'Please select a gender' : null,
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: 'Budget'),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d{0,2})?$')),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d+(\.\d{0,2})?$')),
                       ],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -227,7 +245,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                       value: _mood.isEmpty ? null : _mood,
                       decoration: const InputDecoration(labelText: 'Mood'),
                       items: moodDefinitions.keys
-                          .map((mood) => DropdownMenuItem(value: mood, child: Text(mood)))
+                          .map((mood) =>
+                              DropdownMenuItem(value: mood, child: Text(mood)))
                           .toList(),
                       onChanged: (value) {
                         if (value != null) {
@@ -253,7 +272,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                           );
                         }
                       },
-                      validator: (value) => value == null ? 'Please select a mood' : null,
+                      validator: (value) =>
+                          value == null ? 'Please select a mood' : null,
                     ),
                     TextField(
                       controller: _rewardController,
@@ -274,106 +294,121 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                     ),
 
 // Fixed Dropdown for Reward Period
-DropdownButtonFormField<String>(
-  value: _timePeriod,  // Default time period
-  decoration: const InputDecoration(labelText: 'Reward Period'),
-  items: ['daily', 'Weekly', 'Monthly']
-      .map((period) => DropdownMenuItem(value: period, child: Text(period)))
-      .toList(),
-  onChanged: (value) {
-    if (value != null) {
-      setState(() {
-        _timePeriod = value;  // Update the selected reward period
-      });
-    }
-  },
-  validator: (value) => value == null ? 'Please select a reward period' : null,
-),
+                    DropdownButtonFormField<String>(
+                      value: _timePeriod, // Default time period
+                      decoration:
+                          const InputDecoration(labelText: 'Reward Period'),
+                      items: ['daily', 'Weekly', 'Monthly']
+                          .map((period) => DropdownMenuItem(
+                              value: period, child: Text(period)))
+                          .toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            _timePeriod =
+                                value; // Update the selected reward period
+                          });
+                        }
+                      },
+                      validator: (value) => value == null
+                          ? 'Please select a reward period'
+                          : null,
+                    ),
 
-const SizedBox(height: 10),
                     const SizedBox(height: 10),
-                    
+                    const SizedBox(height: 10),
+
                     ...rewardManager.rewards.map(_buildRewardBox),
                     const SizedBox(height: 20),
                     _isLoading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: _submitForm,
-                            child: Text(_editingChildId == null ? 'Register Child' : 'Update Child'),
+                            child: Text(_editingChildId == null
+                                ? 'Register Child'
+                                : 'Update Child'),
                           ),
                   ],
                 ),
               ),
               const SizedBox(height: 20),
               StreamBuilder<QuerySnapshot>(
-  stream: FirebaseFirestore.instance
-      .collection('children')
-      .where('parentId', isEqualTo: widget.parentId)
-      .snapshots(),
-  builder: (context, snapshot) {
-    if (!snapshot.hasData) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    if (snapshot.data!.docs.isEmpty) {
-      return const Center(child: Text('No children registered'));
-    }
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: snapshot.data!.docs.length,
-      itemBuilder: (context, index) {
-        var doc = snapshot.data!.docs[index];
-        // Format DOB
-        DateTime dob = DateTime.parse(doc['dateOfBirth']);
-        String formattedDob = DateFormat('MM/dd/yyyy').format(dob);
+                stream: FirebaseFirestore.instance
+                    .collection('children')
+                    .where('parentId', isEqualTo: widget.parentId)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text('No children registered'));
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var doc = snapshot.data!.docs[index];
+                      // Format DOB
+                      DateTime dob = DateTime.parse(doc['dateOfBirth']);
+                      String formattedDob =
+                          DateFormat('MM/dd/yyyy').format(dob);
 
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  doc['name'],
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text("Child ID: ${doc['childId']}"),
-                Text("DOB: $formattedDob"),  // Display formatted DOB
-                Text("Gender: ${doc['gender']}"),
-                Text("Budget: \$${doc['budget'] ?? 'N/A'}"),
-                Text("Mood: ${doc['mood'] ?? 'N/A'}"),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit, color: Colors.blue),
-                      onPressed: () {
-                        _populateFormForEdit(doc);
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        await ChildService().deleteChild(doc.id);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Child deleted')),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  },
-),
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 10),
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                doc['name'],
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text("Child ID: ${doc['childId']}"),
+                              Text(
+                                  "DOB: $formattedDob"), // Display formatted DOB
+                              Text("Gender: ${doc['gender']}"),
+                              Text("Budget: \$${doc['budget'] ?? 'N/A'}"),
+                              Text("Mood: ${doc['mood'] ?? 'N/A'}"),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit,
+                                        color: Colors.blue),
+                                    onPressed: () {
+                                      _populateFormForEdit(doc);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete,
+                                        color: Colors.red),
+                                    onPressed: () async {
+                                      await ChildService().deleteChild(doc.id);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Child deleted')),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
               const SizedBox(height: 20),
               // ADDITION: Button to navigate to ViewChildrenScreen
               ElevatedButton(
@@ -381,7 +416,8 @@ const SizedBox(height: 10),
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ViewChildrenScreen(parentId: widget.parentId),
+                      builder: (context) =>
+                          ViewChildrenScreen(parentId: widget.parentId),
                     ),
                   );
                 },
