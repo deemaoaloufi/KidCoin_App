@@ -73,6 +73,10 @@ flutter:
  - assets/UI_FirstPage.png
  - assets/UI_SecondPage.png
  - assets/UI_ThirdPage.png
+ - assets/UI_ChildList.gif
+ - assets/ParentUI.png
+ - assets\icons\girlIcon.png
+ - assets\icons\boyIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

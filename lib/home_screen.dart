@@ -7,9 +7,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Set the background to white
       body: Stack(
         children: [
-          // Background
+          // Background image
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(

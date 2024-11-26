@@ -25,6 +25,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
   String? _editingChildId;
   double? _budget;
   String _mood = '';
+  String _timePeriod = 'Monthly'; // Default time period
+
   RewardManager rewardManager = RewardManager();
   final TextEditingController _rewardController = TextEditingController();
 
@@ -270,7 +272,27 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                         ),
                       ),
                     ),
+
+// Fixed Dropdown for Reward Period
+DropdownButtonFormField<String>(
+  value: _timePeriod,  // Default time period
+  decoration: const InputDecoration(labelText: 'Reward Period'),
+  items: ['daily', 'Weekly', 'Monthly']
+      .map((period) => DropdownMenuItem(value: period, child: Text(period)))
+      .toList(),
+  onChanged: (value) {
+    if (value != null) {
+      setState(() {
+        _timePeriod = value;  // Update the selected reward period
+      });
+    }
+  },
+  validator: (value) => value == null ? 'Please select a reward period' : null,
+),
+
+const SizedBox(height: 10),
                     const SizedBox(height: 10),
+                    
                     ...rewardManager.rewards.map(_buildRewardBox),
                     const SizedBox(height: 20),
                     _isLoading
