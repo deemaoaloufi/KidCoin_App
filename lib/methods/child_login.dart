@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'child_main_page.dart'; // Importing the ChildMainPage
 
-// ChildLoginScreen child enters unique id and navigates to the main page.
 class ChildLoginScreen extends StatefulWidget {
   const ChildLoginScreen({super.key});
 
@@ -12,7 +11,6 @@ class ChildLoginScreen extends StatefulWidget {
 
 class _ChildLoginScreenState extends State<ChildLoginScreen> {
   late TextEditingController _idController;
-  String? _childName;
   bool _isLoading = false;
 
   @override
@@ -21,7 +19,6 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
     _idController = TextEditingController();
   }
 
-  // Verifies unique ID with the stored childId in Firestore
   Future<void> _signIn() async {
     String enteredId = _idController.text.trim().toUpperCase();
 
@@ -37,19 +34,12 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
     });
 
     try {
-      // Query Firestore to find an exisiting child with the entered childId
       QuerySnapshot query = await FirebaseFirestore.instance
           .collection('children')
           .where('childId', isEqualTo: enteredId)
           .get();
 
       if (query.docs.isNotEmpty) {
-        // stores the child's name and goes to the ChildMainPage
-        setState(() {
-          _childName = query.docs.first['name'];
-        });
-
-        //  passes the childId to the ChildMainPage
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -57,12 +47,10 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
           ),
         );
       } else {
-        // Shows "Incorrect unique ID" if no matching childId is found
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Incorrect unique ID')),
         );
       }
-      // Shows "Error verifying ID" if no matching childId is found
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error verifying ID: $e')),
@@ -83,48 +71,110 @@ class _ChildLoginScreenState extends State<ChildLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // Set the background color to white
       appBar: AppBar(
-        title: const Text('Child Login',
-         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        title: const Text(
+          'Child Login',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.purple[300],
-        elevation: 6,
       ),
-      backgroundColor: Colors.white, // Set background to white
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/ParentUI.png'), // Use a similar background image
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Center(
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (_childName != null) ...[
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
                     Text(
-                      'Welcome, $_childName',
-                      style: const TextStyle(
+                      'Welcome to KidCoin',
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white.withOpacity(0.85),
+                        shadows: [
+                          Shadow(
+                            blurRadius: 5.0,
+                            color: Colors.black.withOpacity(0.5),
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 20),
-                  ],
-                  TextFormField(
-                    controller: _idController,
-                    decoration: const InputDecoration(
-                      labelText: 'Enter your unique ID',
-                      border: OutlineInputBorder(),
+                    // Unique ID Input Field
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.purple[100]!, Colors.purple[300]!],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            offset: const Offset(0, 4),
+                            blurRadius: 6,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _idController,
+                        decoration: InputDecoration(
+                          labelText: 'Unique ID',
+                          prefixIcon: Icon(Icons.person, color: Colors.purple[600]),
+                          labelStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.purple,
+                          ),
+                          hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.7), // Softer hint text
+                          ),
+                          border: InputBorder.none, // Remove the border
+                          focusedBorder: InputBorder.none, // Remove the border when focused
+                        ),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white.withOpacity(0.85), // Softer white text
+                        ),
+                      ),
                     ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _signIn, // Updates the button action
-                    child: const Text('Sign In'), // Change button to "Sign In"
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                    _isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: _signIn,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.purple[200]!,
+                              elevation: 8, // Add elevation for shadow effect
+                            ),
+                            child: const Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
               ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }
