@@ -467,7 +467,7 @@ class _ChildMainPageState extends State<ChildMainPage> {
                   ),
                 );
               },
-           ),
-);
-}
+            ),
+    );
+  }
 }
