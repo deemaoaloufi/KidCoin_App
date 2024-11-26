@@ -44,6 +44,7 @@ dependencies:
 
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -75,8 +76,10 @@ flutter:
  - assets/UI_ThirdPage.png
  - assets/UI_ChildList.gif
  - assets/ParentUI.png
+ - assets/ChildUI.png
  - assets\icons\girlIcon.png
  - assets\icons\boyIcon.png
+ - assets\icons\rewardIcon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

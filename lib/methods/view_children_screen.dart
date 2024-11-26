@@ -28,6 +28,12 @@ class ViewChildrenScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
+          // White background
+          Positioned.fill(
+            child: Container(
+              color: Colors.white,
+            ),
+          ),
           // Background GIF
           Positioned.fill(
             child: Image.asset(
