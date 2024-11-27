@@ -292,13 +292,11 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                         ),
                       ),
                     ),
-
-// Fixed Dropdown for Reward Period
                     DropdownButtonFormField<String>(
                       value: _timePeriod, // Default time period
                       decoration:
                           const InputDecoration(labelText: 'Reward Period'),
-                      items: ['daily', 'Weekly', 'Monthly']
+                      items: ['daily', 'Weekly', 'Monthly', 'Test, 1m']
                           .map((period) => DropdownMenuItem(
                               value: period, child: Text(period)))
                           .toList(),
@@ -314,10 +312,8 @@ class _ChildRegistrationState extends State<ChildRegistrationForm> {
                           ? 'Please select a reward period'
                           : null,
                     ),
-
                     const SizedBox(height: 10),
                     const SizedBox(height: 10),
-
                     ...rewardManager.rewards.map(_buildRewardBox),
                     const SizedBox(height: 20),
                     _isLoading
