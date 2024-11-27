@@ -17,6 +17,27 @@ class Budget {
         savings = 0.0,
         totalRemaining = 0.0,
         mood = "";
+// Method to listen for updates from Firestore
+  void listenForUpdates(Function callback) {
+    FirebaseFirestore.instance
+        .collection('children')
+        .doc(childId)
+        .snapshots()
+        .listen((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        // Update the budget variables from the Firestore document
+        foodAndSnacks = documentSnapshot.get('foodAndSnacks') ?? 0.0;
+        entertainment = documentSnapshot.get('entertainment') ?? 0.0;
+        needs = documentSnapshot.get('needs') ?? 0.0;
+        savings = documentSnapshot.get('savings') ?? 0.0;
+        totalRemaining = documentSnapshot.get('totalRemaining') ?? 0.0;
+        mood = documentSnapshot.get('mood') ?? '';
+
+        // Call the provided callback function to update the UI
+        callback();
+      }
+    });
+  }
 
   // Method to add spending in a specified category
   Future<String?> addSpending(String category, double amount) async {
