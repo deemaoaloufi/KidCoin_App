@@ -191,13 +191,13 @@ class _RewardSelectionScreenState extends State<RewardSelectionScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            isRewardGranted ? "Congratulations!" : "Sorry!",
+            isRewardGranted ? "Thank You!" : "Thank You!",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           content: Text(
             isRewardGranted
-                ? "You've won the reward!🎉"
-                : "You didn't meet the target for the reward😞",
+                ? "You've Done Great, Do better next time!👏 "
+                : "You've Done Great, Do better next time!👏 ",
           ),
           actions: [
             TextButton(
